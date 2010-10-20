@@ -115,7 +115,7 @@ filetype indent on
 
 " {{{ MAPS AND FUNCTIONS
 " Editing vimrc
-nmap <silent> <leader>v :source $MYVIMRC<CR>
+nmap <silent> <leader>r :source $MYVIMRC<CR>
 nmap <silent> <leader>e :edit $MYVIMRC<CR>
 
 " in normal mode, toggle paste mode and line numbers
@@ -128,6 +128,13 @@ noremap X "_X
 
 " no more shift for :
 nnoremap ; :
+
+" aaaaack
+nnoremap <leader>a :Ack
+
+" select things that were just pasted
+nnoremap <leader>v V`]
+
 
 " open starting from path of current file
 map <leader>ew :e <C-R>=expand("%:p:h") . "/"  <CR>
@@ -150,11 +157,11 @@ noremap <F7> :TlistToggle<CR>
 ":command -nargs=* Make make <args> | cwindow 3
 
 if maparg("<F5>") == ""
-	map <F5> :Run<CR>
+    map <F5> :Run<CR>
 endif
 
 if maparg("<F9>") == ""
-	map <F9> :make<CR>
+    map <F9> :make<CR>
 endif
 
 " to run type :DiffSaved, to turn off type :diffoff
