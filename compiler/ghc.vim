@@ -21,36 +21,10 @@ if (!exists("b:ghc_staticoptions"))
   let b:ghc_staticoptions = ''
 endif
 
-function! ProgRun(...)
-	update
-	let e = 0
-	let ext = expand("%:e")
-	if ext == "hs" && getftime(expand("%:r")) < getftime(expand("%"))
-		make
-		let e = v:shell_error
-	endif
-	if e == 0
-		if exists("g:runprogstring")
-			execute "!" . g:runprogstring
-		else
-			let idx = 1
-			let arg = ""
-			while idx <= a:0
-				execute "let a = a:" . idx
-				let arg = arg . ' ' . a
-				let idx = idx + 1
-			endwhile
-			if ext == "hs"
-				execute "!./" . expand("%:r") . " " . arg
-			endif
-		endif
-	endif
-endfunction
 " set makeprg (for quickfix mode) 
-"execute 'setlocal makeprg=' . g:ghc . '\ ' . escape(b:ghc_staticoptions,' ') .'\ -e\ :q\ %'
+execute 'setlocal makeprg=' . g:ghc . '\ ' . escape(b:ghc_staticoptions,' ') .'\ -e\ :q\ %'
 "execute 'setlocal makeprg=' . g:ghc .'\ -e\ :q\ %'
-execute 'setlocal makeprg=' . g:ghc .'\ --make\ %'
-command! -nargs=* Run call ProgRun(<f-args>)
+"execute 'setlocal makeprg=' . g:ghc .'\ --make\ %'
 
 " quickfix mode: 
 " fetch file/line-info from error message
