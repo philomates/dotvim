@@ -1,4 +1,3 @@
-
 "{{{ LAYOUT and SETTINGS
 set nocompatible " Use Vim defaults instead of 100% vi compatibility
 set t_Co=256
@@ -24,6 +23,15 @@ set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set ff=unix "removes ^M dos stuff
 set foldmethod=marker " auto fold {{{,}}}
 syntax enable
+
+" user pare to format text (gq)
+" w - specify line length
+" r - repeat characters in bodiless lines
+" j - justifies text
+" e - remove ‘superflous’ lines
+" q - handle nested quotations in plaintext email
+:set formatprg=par
+
 
 
 " welcome to the 21st century
@@ -139,7 +147,7 @@ noremap <F7> :TlistToggle<CR>
 " Command Make will call make and then cwindow which
 " " opens a 3 line error window if any errors are found.
 " " If no errors, it closes any open cwindow.
-:command -nargs=* Make make <args> | cwindow 3
+":command -nargs=* Make make <args> | cwindow 3
 
 if maparg("<F5>") == ""
 	map <F5> :Run<CR>
@@ -178,8 +186,6 @@ nmap _= :call Preserve("normal gg=G")<CR>
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 noremap <leader>q :mksession! ~/.vim/.session <CR>
 noremap <leader>s :source ~/.vim/.session <CR>
-
-command W w !sudo tee % > /dev/null
 
 " }}}
 
