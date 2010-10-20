@@ -1,0 +1,7 @@
+My vim configuration files
+
+Install:
+    git clone git@github.com:phillipm/dotvim.git
+
+Setup:
+    ln -s ~/.vim/vimrc ~/.vimrc
