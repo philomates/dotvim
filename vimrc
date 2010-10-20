@@ -1,8 +1,12 @@
+
+"{{{ LAYOUT and SETTINGS
 set nocompatible " Use Vim defaults instead of 100% vi compatibility
 set t_Co=256
 colorscheme inkpot
 
-"{{{ LAYOUT and SETTINGS
+" pathogen bundles
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 
 set ts=4 " Tab size
 set sw=4 " Shift Width - Auth indent size
@@ -21,8 +25,6 @@ set ff=unix "removes ^M dos stuff
 set foldmethod=marker " auto fold {{{,}}}
 syntax enable
 
-" pathogen bundles
-call pathogen#runtime_append_all_bundles()
 
 " welcome to the 21st century
 set encoding=utf-8
