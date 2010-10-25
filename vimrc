@@ -68,7 +68,7 @@ set si
 set ai
 
 " too long of code
-set colorcolumn=85
+" set colorcolumn=85
 
 set history=100 " have fifty lines of command-line (etc) history
 set showmode " display current mode and partially-typed commands in status line
@@ -199,7 +199,7 @@ noremap <leader>s :source ~/.vim/.session <CR>
 " {{{ FILETYPE STUFF
 " Vim can highlight whitespaces for you in a convenient way
 set list
-set listchars=tab:>.,trail:.,extends:#,nbsp:.,eol:¬
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
 
