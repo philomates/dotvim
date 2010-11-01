@@ -1,27 +1,61 @@
 "{{{ LAYOUT and SETTINGS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible " Use Vim defaults instead of 100% vi compatibility
-set t_Co=256
-colorscheme inkpot
+
+set number
+set ruler
+
+set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
+set ff=unix "removes ^M dos stuff
+set foldmethod=marker " auto fold {{{,}}}
+
+" remember all of these between sessions, but only 10 search terms; also
+" remember info for 10 files, but never any on removable disks, don't remember
+" marks in files, don't rehighlight old search patterns, and only save up to
+" 100 lines of registers; including @10 in there should restrict input buffer
+" but it causes an error for me:
+set viminfo=/10,'10,r/mnt/zip,r/mnt/floppy,f0,h,\"100
+
+set history=100 " have fifty lines of command-line (etc) history
+
+" change the mapleader from \ to ,
+let mapleader=","
 
 " pathogen bundles
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Color
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set t_Co=256
+colorscheme inkpot
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set ts=4 " Tab size
 set sw=4 " Shift Width - Auth indent size
 set sts=4 " Soft Tab Stops - Backspace over 4 spaces like it was one tab
 set expandtab " Convert tabs to spaces
-set autoindent
-set copyindent " copy the previous indentation on autoindenting
 set smarttab
-set nosmartindent
-set number
-set ruler
+
+set ai "Auto indent
+set si "Smart indet
+set copyindent " copy the previous indentation on autoindenting
+
 set iskeyword+=_,$,@,%,# " none of these are word dividers
 set linespace=0 " don't insert extra pixels between rows
-set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
-set ff=unix "removes ^M dos stuff
-set foldmethod=marker " auto fold {{{,}}}
+
+" welcome to the 21st century
+set encoding=utf-8
+
+" highlight whitespaces
+set list
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
+
 syntax enable
 
 " user pare to format text (gq)
@@ -33,10 +67,9 @@ syntax enable
 :set formatprg=par
 
 
-
-" welcome to the 21st century
-set encoding=utf-8
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Statusline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " always show a status line
 set laststatus=2
 
@@ -54,27 +87,16 @@ set statusline=%<%f%r%h%w\ [%L]\%=\:\b%n\ %y\ [%04l,%04v]\ %p%%\ %m
 "                 | +-- readonly flag in square brackets
 "                 +--path to file buffer
 
-" remember all of these between sessions, but only 10 search terms; also
-" remember info for 10 files, but never any on removable disks, don't remember
-" marks in files, don't rehighlight old search patterns, and only save up to
-" 100 lines of registers; including @10 in there should restrict input buffer
-" but it causes an error for me:
-set viminfo=/10,'10,r/mnt/zip,r/mnt/floppy,f0,h,\"100
+set showmode " display current mode and partially-typed commands in status line
+set showcmd " Show command in statusline as it's being typed
 
 set hidden " Let us move between buffers without writing them.
 set wildmenu " turn on command line completion wild style
 set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class,*.svn,*.jpg,*.gif,*.png
-set si
-set ai
 
 " too long of code
 " set colorcolumn=85
 
-set history=100 " have fifty lines of command-line (etc) history
-set showmode " display current mode and partially-typed commands in status line
-set showcmd " Show command in statusline as it's being typed
-" change the mapleader from \ to ,
-let mapleader=","
 "}}}
 
 " {{{ MOVEMENT
@@ -95,6 +117,14 @@ noremap k gk
 " Map jj to <Esc> during insert mode
 imap jj 
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use the arrows to something usefull
+map <right> :bn<cr>
+map <left> :bp<cr>
+
 " }}}
 
 " {{{ SEARCHING
@@ -105,12 +135,6 @@ map <silent> \ :let @/=""<cr>
 
 " Let H toggle highlighting
 map <silent> H :set hls!<CR>
-
-
-" Activate auto filetype detection
-filetype on
-filetype plugin on
-filetype indent on
 " }}}
 
 " {{{ MAPS AND FUNCTIONS
@@ -135,6 +159,24 @@ nnoremap <leader>a :Ack
 " select things that were just pasted
 nnoremap <leader>v V`]
 
+" When pressing <leader>cd switch to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Command Line
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Bash like keys for the command line
+cnoremap <C-A>      <Home>
+cnoremap <C-E>      <End>
+cnoremap <C-K>      <C-U>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Visual
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Really useful!
+" In visual mode when you press * or # to search for the current selection
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
 
 " open starting from path of current file
 map <leader>ew :e <C-R>=expand("%:p:h") . "/"  <CR>
@@ -189,6 +231,20 @@ endfunction
 nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 nmap _= :call Preserve("normal gg=G")<CR>
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Spell checking
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+"Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+
 " save session maps
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 noremap <leader>q :mksession! ~/.vim/.session <CR>
@@ -197,12 +253,17 @@ noremap <leader>s :source ~/.vim/.session <CR>
 " }}}
 
 " {{{ FILETYPE STUFF
-" Vim can highlight whitespaces for you in a convenient way
-set list
-set listchars=tab:>.,trail:.,extends:#,nbsp:.
+" Activate auto filetype detection
+filetype on
+filetype plugin on
+filetype indent on
+
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Python
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Extended python highlighting
 let python_highlight_all=0
 " Pylint support
@@ -211,7 +272,9 @@ let g:pylint_onwrite = 0
 let g:pylint_show_rate = 0
 let g:pylint_cwindow = 0
 
-" Latex Suite
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => LaTeX
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
@@ -226,6 +289,9 @@ let g:tex_flavor='latex'
 let g:Imap_UsePlaceHolders=0
 nmap <C-U> <Plug>IMAP_JumpForward
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Haskell
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " use ghc functionality for haskell files
 au Bufenter *.hs compiler ghc
 " configure browser for haskell_doc.vim
