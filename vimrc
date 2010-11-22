@@ -106,6 +106,13 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
+" Maps Alt-[h,j,k,l] to resizing a window split
+nnoremap <C-LEFT> <C-w><
+nnoremap <C-UP> <C-W>+
+nnoremap <C-DOWN> <C-W>-
+nnoremap <C-RIGHT> <C-w>>
+
+
 "sets viewport scroll x3
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
@@ -141,6 +148,8 @@ map <silent> H :set hls!<CR>
 " Editing vimrc
 nmap <silent> <leader>r :source $MYVIMRC<CR>
 nmap <silent> <leader>e :edit $MYVIMRC<CR>
+
+command W w !sudo tee % >/dev/null
 
 " in normal mode, toggle paste mode and line numbers
 nnoremap <F2> :set invnumber<CR>:set invpaste paste?<CR>
