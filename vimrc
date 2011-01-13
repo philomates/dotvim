@@ -151,6 +151,9 @@ nmap <silent> <leader>e :edit $MYVIMRC<CR>
 
 command W w !sudo tee % >/dev/null
 
+" split windows
+nmap - :Sexplore<CR>
+
 " in normal mode, toggle paste mode and line numbers
 nnoremap <F2> :set invnumber<CR>:set invpaste paste?<CR>
 set pastetoggle=<F2> "switch between insert paste and insert
@@ -258,6 +261,14 @@ map <leader>s? z=
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 noremap <leader>q :mksession! ~/.vim/.session <CR>
 noremap <leader>s :source ~/.vim/.session <CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Surround.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap s ysi
+nmap S ysa
+nmap s$ ys$
+nmap sv gvs
 
 " }}}
 
