@@ -204,6 +204,7 @@ endfunction
 
 noremap <F8> :call ReplaceVar()<CR>
 noremap <F7> :TlistToggle<CR>
+noremap <F6> :NERDTreeToggle<CR>
 
 " Command Make will call make and then cwindow which
 " " opens a 3 line error window if any errors are found.
