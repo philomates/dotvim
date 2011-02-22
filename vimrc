@@ -36,9 +36,9 @@ colorscheme inkpot
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set ts=4 " Tab size
-set sw=4 " Shift Width - Auth indent size
-set sts=4 " Soft Tab Stops - Backspace over 4 spaces like it was one tab
+set ts=2 " Tab size
+set sw=2 " Shift Width - Auth indent size
+set sts=2 " Soft Tab Stops - Backspace over 4 spaces like it was one tab
 set expandtab " Convert tabs to spaces
 set smarttab
 
