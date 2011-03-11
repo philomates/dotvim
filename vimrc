@@ -151,9 +151,6 @@ nmap <silent> <leader>e :edit $MYVIMRC<CR>
 
 command W w !sudo tee % >/dev/null
 
-" split windows
-nmap - :Sexplore<CR>
-
 " in normal mode, toggle paste mode and line numbers
 nnoremap <F2> :set invnumber<CR>:set invpaste paste?<CR>
 set pastetoggle=<F2> "switch between insert paste and insert
