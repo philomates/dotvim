@@ -38,7 +38,7 @@ colorscheme inkpot
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set ts=2 " Tab size
 set sw=2 " Shift Width - Auth indent size
-set sts=2 " Soft Tab Stops - Backspace over 4 spaces like it was one tab
+set sts=2 " Soft Tab Stops - Backspace over 2 spaces like it was one tab
 set expandtab " Convert tabs to spaces
 set smarttab
 
@@ -151,9 +151,6 @@ nmap <silent> <leader>e :edit $MYVIMRC<CR>
 
 command W w !sudo tee % >/dev/null
 
-" split windows
-nmap - :Sexplore<CR>
-
 " in normal mode, toggle paste mode and line numbers
 nnoremap <F2> :set invnumber<CR>:set invpaste paste?<CR>
 set pastetoggle=<F2> "switch between insert paste and insert
@@ -257,6 +254,9 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
+" disable man lookup
+map <S-k> l
+
 
 " save session maps
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
@@ -281,6 +281,7 @@ filetype indent on
 
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
+au BufRead,BufNewFile *.rkt set filetype=scheme
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
