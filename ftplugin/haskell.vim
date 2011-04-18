@@ -12,3 +12,5 @@ setlocal include=^import\\s*\\(qualified\\)\\?\\s*
 setlocal includeexpr=substitute(v:fname,'\\.','/','g').'.'
 setlocal suffixesadd=hs,lhs,hsc
 
+
+nmap <silent> <leader>t :g/trace/call NERDComment(0, 'toggle')<CR>
