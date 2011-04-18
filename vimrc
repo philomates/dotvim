@@ -254,6 +254,9 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
+" disable man lookup
+map <S-k> l
+
 
 " save session maps
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
@@ -278,6 +281,7 @@ filetype indent on
 
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
+au BufRead,BufNewFile *.rkt set filetype=scheme
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
