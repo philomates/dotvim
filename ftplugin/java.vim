@@ -95,7 +95,7 @@ endfunction
 
 
 set shellpipe=>\ %s\ 2>&1
-set makeprg=javac\ -target\ 1.5\ -classpath\ \"$CLASSPATH:%:p:h:h\\"\ \"%\"
+set makeprg=javac\ -target\ 1.7\ -classpath\ \"$CLASSPATH:%:p:h:h\\"\ \"%\"
 "set makeprg=javac\ -target\ 1.5\ -classpath\ C:\Documents\ and\ Settings\Matey\My\ Documents\workspace\ %
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
 " set makeprg=jikes\ +E\ %

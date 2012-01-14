@@ -112,6 +112,11 @@ nnoremap <C-UP> <C-W>+
 nnoremap <C-DOWN> <C-W>-
 nnoremap <C-RIGHT> <C-w>>
 
+" instead of 0
+noremap H ^
+" instead of $
+noremap L g_
+
 
 "sets viewport scroll x3
 nnoremap <C-e> 3<C-e>
@@ -142,6 +147,14 @@ map <silent> \ :let @/=""<cr>
 
 " Let H toggle highlighting
 map <silent> H :set hls!<CR>
+
+" Highlight word {{{
+nnoremap <silent> <leader>hh :execute 'match InterestingWord1 /\<<c-r><c-w>\>/'<cr>
+nnoremap <silent> <leader>h1 :execute 'match InterestingWord1 /\<<c-r><c-w>\>/'<cr>
+nnoremap <silent> <leader>h2 :execute '2match InterestingWord2 /\<<c-r><c-w>\>/'<cr>
+nnoremap <silent> <leader>h3 :execute '3match InterestingWord3 /\<<c-r><c-w>\>/'<cr>
+" }}}
+
 " }}}
 
 " {{{ MAPS AND FUNCTIONS
@@ -170,6 +183,9 @@ nnoremap <leader>v V`]
 
 " When pressing <leader>cd switch to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>
+
+" Fuck you too, manual key.
+nnoremap K <nop>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Command Line
@@ -310,6 +326,8 @@ let g:tex_flavor='latex'
 " overriding imaps JumpFunc
 let g:Imap_UsePlaceHolders=0
 nmap <C-U> <Plug>IMAP_JumpForward
+nmap <F3> :w !detex \| wc -w<CR>
+nmap <F10> :!pdflatex %<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Haskell
@@ -319,4 +337,156 @@ au Bufenter *.hs compiler ghc
 " configure browser for haskell_doc.vim
 let g:haddock_browser = "/usr/bin/firefox"
 
+" }}}
+
+
+" Change case
+nnoremap <C-u> gUiw
+inoremap <C-u> <esc>gUiwea
+
+" Source
+vnoremap <leader>S y:execute @@<cr>
+nnoremap <leader>S ^vg_y:execute @@<cr>
+
+" Split/Join {{{
+"
+" Basically this splits the current line into two new ones at the cursor position,
+" then joins the second one with whatever comes next.
+"
+" Example:                      Cursor Here
+"                                    |
+"                                    V
+" foo = ('hello', 'world', 'a', 'b', 'c',
+"        'd', 'e')
+"
+"            becomes
+"
+" foo = ('hello', 'world', 'a', 'b',
+"        'c', 'd', 'e')
+"
+" Especially useful for adding items in the middle of long lists/tuples in Python
+" while maintaining a sane text width.
+nnoremap K h/[^ ]<cr>"zd$jyyP^v$h"zpJk:s/\v +$//<cr>:noh<cr>j^
+" }}}
+
+" Nyan! ------------------------------------------------------------------- {{{
+
+function! NyanMe() " {{{
+    hi NyanFur             guifg=#BBBBBB
+    hi NyanPoptartEdge     guifg=#ffd0ac
+    hi NyanPoptartFrosting guifg=#fd3699 guibg=#fe98ff
+    hi NyanRainbow1        guifg=#6831f8
+    hi NyanRainbow2        guifg=#0099fc
+    hi NyanRainbow3        guifg=#3cfa04
+    hi NyanRainbow4        guifg=#fdfe00
+    hi NyanRainbow5        guifg=#fc9d00
+    hi NyanRainbow6        guifg=#fe0000
+
+
+    echohl NyanRainbow1
+    echon "≈"
+    echohl NyanRainbow2
+    echon "≋"
+    echohl NyanRainbow3
+    echon "≈"
+    echohl NyanRainbow4
+    echon "≋"
+    echohl NyanRainbow5
+    echon "≈"
+    echohl NyanRainbow6
+    echon "≋"
+    echohl NyanRainbow1
+    echon "≈"
+    echohl NyanRainbow2
+    echon "≋"
+    echohl NyanRainbow3
+    echon "≈"
+    echohl NyanRainbow4
+    echon "≋"
+    echohl NyanRainbow5
+    echon "≈"
+    echohl NyanRainbow6
+    echon "≋"
+    echohl None
+    echo ""
+
+    echohl NyanRainbow1
+    echon "≈"
+    echohl NyanRainbow2
+    echon "≋"
+    echohl NyanRainbow3
+    echon "≈"
+    echohl NyanRainbow4
+    echon "≋"
+    echohl NyanRainbow5
+    echon "≈"
+    echohl NyanRainbow6
+    echon "≋"
+    echohl NyanRainbow1
+    echon "≈"
+    echohl NyanRainbow2
+    echon "≋"
+    echohl NyanRainbow3
+    echon "≈"
+    echohl NyanRainbow4
+    echon "≋"
+    echohl NyanRainbow5
+    echon "≈"
+    echohl NyanRainbow6
+    echon "≋"
+    echohl NyanFur
+    echon "╰"
+    echohl NyanPoptartEdge
+    echon "⟨"
+    echohl NyanPoptartFrosting
+    echon "⣮⣯⡿"
+    echohl NyanPoptartEdge
+    echon "⟩"
+    echohl NyanFur
+    echon "⩾^ω^⩽"
+    echohl None
+    echo ""
+
+    echohl NyanRainbow1
+    echon "≈"
+    echohl NyanRainbow2
+    echon "≋"
+    echohl NyanRainbow3
+    echon "≈"
+    echohl NyanRainbow4
+    echon "≋"
+    echohl NyanRainbow5
+    echon "≈"
+    echohl NyanRainbow6
+    echon "≋"
+    echohl NyanRainbow1
+    echon "≈"
+    echohl NyanRainbow2
+    echon "≋"
+    echohl NyanRainbow3
+    echon "≈"
+    echohl NyanRainbow4
+    echon "≋"
+    echohl NyanRainbow5
+    echon "≈"
+    echohl NyanRainbow6
+    echon "≋"
+    echohl None
+    echon " "
+    echohl NyanFur
+    echon "”   ‟"
+    echohl None
+
+    sleep 1
+    redraw
+    echo " "
+    echo " "
+    echo "Noms?"
+    redraw
+endfunction " }}}
+command! NyanMe call NyanMe()
+" }}}
+
+" Powerline ------------------------------------------------------------------- {{{
+let g:Powerline_symbols = 'compatible'
 " }}}
