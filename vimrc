@@ -162,6 +162,7 @@ nnoremap <silent> <leader>h3 :execute '3match InterestingWord3 /\<<c-r><c-w>\>/'
 nmap <silent> <leader>r :source $MYVIMRC<CR>
 nmap <silent> <leader>e :edit $MYVIMRC<CR>
 
+" Sudo Save
 command W w !sudo tee % >/dev/null
 
 " in normal mode, toggle paste mode and line numbers
@@ -186,6 +187,21 @@ map <leader>cd :cd %:p:h<cr>
 
 " Fuck you too, manual key.
 nnoremap K <nop>
+
+" Lambda for racket
+imap <C-S-L> λ
+
+" Change case up
+nnoremap <C-u> gUiw
+inoremap <C-u> <esc>gUiwea
+
+" Change case down
+nnoremap <C-d> guiw
+inoremap <C-d> <esc>guiwea
+
+" Source
+vnoremap <leader>S y:execute @@<cr>
+nnoremap <leader>S ^vg_y:execute @@<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Command Line
@@ -297,18 +313,23 @@ filetype indent on
 
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
-au BufRead,BufNewFile *.rkt set filetype=scheme
 
+" .md is a markdown filetype
+au BufRead,BufNewFile *.md set filetype=markdown
+au BufRead,BufNewFile *.md.draft set filetype=markdown
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Extended python highlighting
 let python_highlight_all=0
+au FileType python set makeprg=pylint\ --reports=n\ --output-format=parseable\ --rcfile=/home/mates/.pylintrc\ %
+au FileType python set errorformat=%f:%l:\ %m
+au FileType python set ts=4 sw=4 sts=4
 " Pylint support
-autocmd FileType python compiler pylint
-let g:pylint_onwrite = 0
-let g:pylint_show_rate = 0
-let g:pylint_cwindow = 0
+"autocmd FileType python compiler pylint
+"let g:pylint_onwrite = 1
+"let g:pylint_show_rate = 0
+"let g:pylint_cwindow = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LaTeX
@@ -340,14 +361,6 @@ let g:haddock_browser = "/usr/bin/firefox"
 " }}}
 
 
-" Change case
-nnoremap <C-u> gUiw
-inoremap <C-u> <esc>gUiwea
-
-" Source
-vnoremap <leader>S y:execute @@<cr>
-nnoremap <leader>S ^vg_y:execute @@<cr>
-
 " Split/Join {{{
 "
 " Basically this splits the current line into two new ones at the cursor position,
@@ -369,124 +382,10 @@ nnoremap <leader>S ^vg_y:execute @@<cr>
 nnoremap K h/[^ ]<cr>"zd$jyyP^v$h"zpJk:s/\v +$//<cr>:noh<cr>j^
 " }}}
 
-" Nyan! ------------------------------------------------------------------- {{{
-
-function! NyanMe() " {{{
-    hi NyanFur             guifg=#BBBBBB
-    hi NyanPoptartEdge     guifg=#ffd0ac
-    hi NyanPoptartFrosting guifg=#fd3699 guibg=#fe98ff
-    hi NyanRainbow1        guifg=#6831f8
-    hi NyanRainbow2        guifg=#0099fc
-    hi NyanRainbow3        guifg=#3cfa04
-    hi NyanRainbow4        guifg=#fdfe00
-    hi NyanRainbow5        guifg=#fc9d00
-    hi NyanRainbow6        guifg=#fe0000
-
-
-    echohl NyanRainbow1
-    echon "≈"
-    echohl NyanRainbow2
-    echon "≋"
-    echohl NyanRainbow3
-    echon "≈"
-    echohl NyanRainbow4
-    echon "≋"
-    echohl NyanRainbow5
-    echon "≈"
-    echohl NyanRainbow6
-    echon "≋"
-    echohl NyanRainbow1
-    echon "≈"
-    echohl NyanRainbow2
-    echon "≋"
-    echohl NyanRainbow3
-    echon "≈"
-    echohl NyanRainbow4
-    echon "≋"
-    echohl NyanRainbow5
-    echon "≈"
-    echohl NyanRainbow6
-    echon "≋"
-    echohl None
-    echo ""
-
-    echohl NyanRainbow1
-    echon "≈"
-    echohl NyanRainbow2
-    echon "≋"
-    echohl NyanRainbow3
-    echon "≈"
-    echohl NyanRainbow4
-    echon "≋"
-    echohl NyanRainbow5
-    echon "≈"
-    echohl NyanRainbow6
-    echon "≋"
-    echohl NyanRainbow1
-    echon "≈"
-    echohl NyanRainbow2
-    echon "≋"
-    echohl NyanRainbow3
-    echon "≈"
-    echohl NyanRainbow4
-    echon "≋"
-    echohl NyanRainbow5
-    echon "≈"
-    echohl NyanRainbow6
-    echon "≋"
-    echohl NyanFur
-    echon "╰"
-    echohl NyanPoptartEdge
-    echon "⟨"
-    echohl NyanPoptartFrosting
-    echon "⣮⣯⡿"
-    echohl NyanPoptartEdge
-    echon "⟩"
-    echohl NyanFur
-    echon "⩾^ω^⩽"
-    echohl None
-    echo ""
-
-    echohl NyanRainbow1
-    echon "≈"
-    echohl NyanRainbow2
-    echon "≋"
-    echohl NyanRainbow3
-    echon "≈"
-    echohl NyanRainbow4
-    echon "≋"
-    echohl NyanRainbow5
-    echon "≈"
-    echohl NyanRainbow6
-    echon "≋"
-    echohl NyanRainbow1
-    echon "≈"
-    echohl NyanRainbow2
-    echon "≋"
-    echohl NyanRainbow3
-    echon "≈"
-    echohl NyanRainbow4
-    echon "≋"
-    echohl NyanRainbow5
-    echon "≈"
-    echohl NyanRainbow6
-    echon "≋"
-    echohl None
-    echon " "
-    echohl NyanFur
-    echon "”   ‟"
-    echohl None
-
-    sleep 1
-    redraw
-    echo " "
-    echo " "
-    echo "Noms?"
-    redraw
-endfunction " }}}
-command! NyanMe call NyanMe()
-" }}}
-
 " Powerline ------------------------------------------------------------------- {{{
 let g:Powerline_symbols = 'compatible'
 " }}}
+
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'active_filetypes': ['haskell', 'python'],
+                           \ 'passive_filetypes': ['puppet'] }
