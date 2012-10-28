@@ -64,7 +64,7 @@ syntax enable
 " j - justifies text
 " e - remove ‘superflous’ lines
 " q - handle nested quotations in plaintext email
-:set formatprg=par
+":set formatprg=par
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -92,7 +92,7 @@ set showcmd " Show command in statusline as it's being typed
 
 set hidden " Let us move between buffers without writing them.
 set wildmenu " turn on command line completion wild style
-set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class,*.svn,*.jpg,*.gif,*.png
+set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class,*.svn,*.jpg,*.gif,*.png,*.glob,*.vo
 
 " too long of code
 " set colorcolumn=85
@@ -317,6 +317,7 @@ autocmd filetype html,xml set listchars-=tab:>.
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=markdown
 au BufRead,BufNewFile *.md.draft set filetype=markdown
+au! BufRead,BufNewFile *.ott setfiletype ott
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
