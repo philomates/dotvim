@@ -28,6 +28,3 @@
 [submodule "bundle/coq.vim"]
 	path = bundle/coq.vim
 	url = https://github.com/jvoorhis/coq.vim.git
-[submodule "bundle/vim-markdown"]
-	path = bundle/vim-markdown
-	url = git://github.com/plasticboy/vim-markdown.git
