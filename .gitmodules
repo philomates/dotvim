@@ -28,3 +28,6 @@
 [submodule "bundle/coq.vim"]
 	path = bundle/coq.vim
 	url = https://github.com/jvoorhis/coq.vim.git
+[submodule "bundle/vim-latex"]
+	path = bundle/vim-latex
+	url = git://git.code.sf.net/p/vim-latex/vim-latex
