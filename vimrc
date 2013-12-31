@@ -26,6 +26,8 @@ let mapleader=","
 " pathogen bundles
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
+" To disable a plugin, add it's bundle name to the following list
+" let g:pathogen_disabled = ['vim-latex', 'latex-suite']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Color
@@ -51,6 +53,7 @@ set linespace=0 " don't insert extra pixels between rows
 
 " welcome to the 21st century
 set encoding=utf-8
+set fileencoding=utf-8
 
 " highlight whitespaces
 set list
@@ -92,7 +95,7 @@ set showcmd " Show command in statusline as it's being typed
 
 set hidden " Let us move between buffers without writing them.
 set wildmenu " turn on command line completion wild style
-set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class,*.svn,*.jpg,*.gif,*.png,*.glob,*.vo
+set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class,*.svn,*.jpg,*.gif,*.png,*.glob,*.vo,*.log,*.aux
 
 " too long of code
 " set colorcolumn=85
@@ -245,7 +248,7 @@ if maparg("<F5>") == ""
 endif
 
 if maparg("<F9>") == ""
-    map <F9> :make<CR>
+    map <F9> :make!<CR>
 endif
 
 " to run type :DiffSaved, to turn off type :diffoff
@@ -315,8 +318,8 @@ filetype indent on
 autocmd filetype html,xml set listchars-=tab:>.
 
 " .md is a markdown filetype
-au BufRead,BufNewFile *.md set filetype=markdown
-au BufRead,BufNewFile *.md.draft set filetype=markdown
+au BufRead,BufNewFile *.md set filetype=pdc
+au BufRead,BufNewFile *.md.draft set filetype=pdc
 au! BufRead,BufNewFile *.ott setfiletype ott
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
@@ -344,12 +347,16 @@ set grepprg=grep\ -nH\ $*
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
+let g:tex_indent_items = 1
+let g:tex_indent_brace = 0
 
 " overriding imaps JumpFunc
-let g:Imap_UsePlaceHolders=0
+let g:Imap_UsePlaceHolders=1
 nmap <C-U> <Plug>IMAP_JumpForward
 nmap <F3> :w !detex \| wc -w<CR>
 nmap <F10> :!pdflatex %<CR>
+let g:Tex_IgnoredWarnings=1
+au FileType tex set makeprg=make
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Haskell
@@ -389,4 +396,4 @@ let g:Powerline_symbols = 'compatible'
 
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['haskell', 'python'],
-                           \ 'passive_filetypes': ['puppet'] }
+                           \ 'passive_filetypes': ['tex', 'puppet'] }
