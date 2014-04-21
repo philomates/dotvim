@@ -60,6 +60,7 @@ set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
 syntax enable
+syntax on
 
 " user pare to format text (gq)
 " w - specify line length
@@ -338,7 +339,7 @@ au FileType python set ts=4 sw=4 sts=4
 "let g:pylint_cwindow = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => LaTeX
+" => LaTeX-Suite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
@@ -364,7 +365,20 @@ nmap <C-U> <Plug>IMAP_JumpForward
 nmap <F3> :w !detex \| wc -w<CR>
 nmap <F10> :!pdflatex %<CR>
 let g:Tex_IgnoredWarnings=1
-au FileType tex set makeprg=make
+" au FileType tex set makeprg=make
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => LaTeX-ATP
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:Tex_DefaultTargetFormat = 'pdf'
+let g:atp_StatusLine=1
+let g:atp_ProgressBar = 1
+let g:atp_statusNotif=1
+let g:Tex_CompileRule_pdf = 'pdflatex -interaction=nonstopmode --enable-write18 $*'
+let g:atp_TexCompiler = "pdflatex"
+let g:atp_TexFlavor = "latex"
+let g:atp_ProjectScript=1
+au FileType tex map <F9> :Latexmk<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Haskell
