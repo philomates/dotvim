@@ -376,31 +376,47 @@ let g:haddock_browser = "/usr/bin/firefox"
 
 " }}}
 
-
-" Split/Join {{{
-"
-" Basically this splits the current line into two new ones at the cursor position,
-" then joins the second one with whatever comes next.
-"
-" Example:                      Cursor Here
-"                                    |
-"                                    V
-" foo = ('hello', 'world', 'a', 'b', 'c',
-"        'd', 'e')
-"
-"            becomes
-"
-" foo = ('hello', 'world', 'a', 'b',
-"        'c', 'd', 'e')
-"
-" Especially useful for adding items in the middle of long lists/tuples in Python
-" while maintaining a sane text width.
-nnoremap K h/[^ ]<cr>"zd$jyyP^v$h"zpJk:s/\v +$//<cr>:noh<cr>j^
+" Digraphs {{{
+digraph -( 8713
+digraph -0 8888
+digraph -\ 8614
+digraph \- 8866
+digraph ~> 8669
+digraph \> 8657
+digraph \< 8659
+digraph \2 8777
+" ⅋
+digraph -& 8523
+" ⊗
+digraph 0x 8855
+" ْْ⊕
+digraph 0+ 8853
 " }}}
 
-" Powerline ------------------------------------------------------------------- {{{
-let g:Powerline_symbols = 'compatible'
-" }}}
+  " Split/Join {{{
+  "
+  " Basically this splits the current line into two new ones at the cursor position,
+  " then joins the second one with whatever comes next.
+  "
+  " Example:                      Cursor Here
+  "                                    |
+  "                                    V
+  " foo = ('hello', 'world', 'a', 'b', 'c',
+  "        'd', 'e')
+  "
+  "            becomes
+  "
+  " foo = ('hello', 'world', 'a', 'b',
+  "        'c', 'd', 'e')
+  "
+  " Especially useful for adding items in the middle of long lists/tuples in Python
+  " while maintaining a sane text width.
+  nnoremap K h/[^ ]<cr>"zd$jyyP^v$h"zpJk:s/\v +$//<cr>:noh<cr>j^
+  " }}}
+
+  " Powerline ------------------------------------------------------------------- {{{
+  let g:Powerline_symbols = 'compatible'
+  " }}}
 
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['haskell', 'python'],
