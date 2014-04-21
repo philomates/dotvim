@@ -27,7 +27,7 @@ let mapleader=","
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 " To disable a plugin, add it's bundle name to the following list
-" let g:pathogen_disabled = ['vim-latex', 'latex-suite']
+let g:pathogen_disabled = ['vim-latex', 'latex-suite']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Color
@@ -317,6 +317,8 @@ filetype indent on
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
 
+let NERDTreeIgnore = ['\.pyc$','\.aux$','\.pdf$','\.log$','#$[[file]]']
+
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
 au BufRead,BufNewFile *.md.draft set filetype=pdc
@@ -349,6 +351,12 @@ set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 let g:tex_indent_items = 1
 let g:tex_indent_brace = 0
+let g:Tex_EnvironmentMaps = 0
+let g:Tex_EnvironmentMenus = 0
+let g:Tex_FontMaps = 0
+let g:Tex_FontMenus = 0
+let g:Tex_SectionMaps = 0
+let g:Tex_SectionMenus = 0
 
 " overriding imaps JumpFunc
 let g:Imap_UsePlaceHolders=1
