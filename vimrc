@@ -318,7 +318,7 @@ filetype indent on
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
 
-let NERDTreeIgnore = ['\.pyc$','\.aux$','\.pdf$','\.log$','#$[[file]]']
+let NERDTreeIgnore = ['\.pyc$','\.aux$','\.toc$','\.pdf$','\.log$','#$[[file]]']
 
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
@@ -365,20 +365,8 @@ nmap <C-U> <Plug>IMAP_JumpForward
 nmap <F3> :w !detex \| wc -w<CR>
 nmap <F10> :!pdflatex %<CR>
 let g:Tex_IgnoredWarnings=1
-" au FileType tex set makeprg=make
+au FileType tex set makeprg=make
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => LaTeX-ATP
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:Tex_DefaultTargetFormat = 'pdf'
-let g:atp_StatusLine=1
-let g:atp_ProgressBar = 1
-let g:atp_statusNotif=1
-let g:Tex_CompileRule_pdf = 'pdflatex -interaction=nonstopmode --enable-write18 $*'
-let g:atp_TexCompiler = "pdflatex"
-let g:atp_TexFlavor = "latex"
-let g:atp_ProjectScript=1
-au FileType tex map <F9> :Latexmk<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Haskell
