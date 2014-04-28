@@ -180,6 +180,8 @@ noremap X "_X
 " no more shift for :
 nnoremap ; :
 
+nnoremap <leader>w i{<ESC>l%a}<ESC>h%h
+
 " aaaaack
 nnoremap <leader>a :Ack
 
@@ -366,6 +368,7 @@ nmap <F3> :w !detex \| wc -w<CR>
 nmap <F10> :!pdflatex %<CR>
 let g:Tex_IgnoredWarnings=1
 au FileType tex set makeprg=make
+au FileType tex map <F9> :Make<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
