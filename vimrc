@@ -144,7 +144,7 @@ map <left> :bp<cr>
 " }}}
 
 " {{{ SEARCHING
-set hls " Turn highlight search on by defaul
+set hls " Turn highlight search on by default
 
 " Let \ clear the search highlighting
 map <silent> \ :let @/=""<cr>
@@ -232,13 +232,16 @@ map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 
 " replaces all exact instances of a variable in a file with another
 function! ReplaceVar()
-  let new_var = input("Replace With?: ")
   let old_var = expand("<cword>")
+  let new_var = input("Replace ".old_var." with: ")
+  exe "normal! mZ"
   exe "%s/\\<".old_var."\\>/".new_var."/g"
+  exe "normal! `Z"
 endfunction
 
 noremap <F8> :call ReplaceVar()<CR>
-noremap <F7> :TlistToggle<CR>
+noremap <F7> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
 noremap <F6> :NERDTreeToggle<CR>
 
 " Command Make will call make and then cwindow which
@@ -320,12 +323,18 @@ filetype indent on
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
 
-let NERDTreeIgnore = ['\.pyc$','\.aux$','\.toc$','\.pdf$','\.log$','#$[[file]]']
+let NERDTreeIgnore = ['\.pyc$','\.aux$','\.toc$','\.pdf$','\.log$','\.glob','\.v.d','\.vo','#$[[file]]']
 
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
 au BufRead,BufNewFile *.md.draft set filetype=pdc
 au! BufRead,BufNewFile *.ott setfiletype ott
+autocmd BufNewFile,BufRead *
+  \ if expand('%:~') =~ '^\~/Dropbox' |
+  \   set noswapfile |
+  \ else |
+  \   set swapfile |
+  \ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -375,10 +384,22 @@ au FileType tex map <F9> :Make<CR>
 " => Haskell
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " use ghc functionality for haskell files
+" au Bufenter *.hs compiler ghc
+au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
+au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
+au FileType haskell nnoremap <buffer> <silent> <F3> :HdevtoolsInfo<CR>
+au FileType haskell nnoremap <buffer> <F4> :Hoogle
+au FileType haskell nnoremap <buffer> <C-F4> :HoogleClose<CR>
+let g:haddock_browser = "/usr/bin/chromium"
+let g:haddock_docdir = "/usr/share/doc/ghc/html/"
 au Bufenter *.hs compiler ghc
-" configure browser for haskell_doc.vim
-let g:haddock_browser = "/usr/bin/firefox"
+" Reload
+map <silent> <leader>tu :call GHC_BrowseAll()<CR>
+" Type Lookup
+map <silent> <leader>tw :call GHC_ShowType(1)<CR>
+" let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
 
+autocmd FileType coq set commentstring=(*\ %s\ *)
 " }}}
 
 " Digraphs {{{
@@ -426,3 +447,12 @@ digraph 0+ 8853
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['haskell', 'python'],
                            \ 'passive_filetypes': ['tex', 'puppet'] }
+map <silent> <Leader>c :Errors<CR>
+map <Leader>x :SyntasticToggleMode<CR>
+
+if &term =~ '256color'
+  " disable Background Color Erase (BCE) so that color schemes
+  " render properly when inside 256-color tmux and GNU screen.
+  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+  set t_ut=
+endif
