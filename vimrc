@@ -325,6 +325,11 @@ autocmd filetype html,xml set listchars-=tab:>.
 
 let NERDTreeIgnore = ['\.pyc$','\.aux$','\.toc$','\.pdf$','\.log$','\.glob','\.v.d','\.vo','#$[[file]]']
 
+au BufRead,BufNewFile *.scrbl set filetype=scribble
+
+" java
+let g:syntastic_java_javac_classpath = $CLASSPATH . ':/home/mates/programming/java/textual-filters/build/classes'
+
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
 au BufRead,BufNewFile *.md.draft set filetype=pdc
