@@ -182,8 +182,8 @@ nnoremap ; :
 
 nnoremap <leader>w i{<ESC>l%a}<ESC>h%h
 
-" aaaaack
-nnoremap <leader>a :Ack
+" aaaaag
+nnoremap <leader>a :Ag
 
 " select things that were just pasted
 nnoremap <leader>v V`]
@@ -204,6 +204,9 @@ inoremap <C-u> <esc>gUiwea
 " Change case down
 nnoremap <C-d> guiw
 inoremap <C-d> <esc>guiwea
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 
 " Source
 vnoremap <leader>S y:execute @@<cr>
@@ -323,9 +326,10 @@ filetype indent on
 " disable for html
 autocmd filetype html,xml set listchars-=tab:>.
 
-let NERDTreeIgnore = ['\.pyc$','\.aux$','\.toc$','\.pdf$','\.log$','\.glob','\.v.d','\.vo','#$[[file]]']
+let NERDTreeIgnore = ['\.pyc$','\.aux$','\.class$','\.toc$','\.pdf$','\.log$','\.glob','\.v.d','\.vo','#$[[file]]']
 
 au BufRead,BufNewFile *.scrbl set filetype=scribble
+au BufNewFile,BufRead *.ejs set filetype=html
 
 " java
 let g:syntastic_java_javac_classpath = $CLASSPATH . ':/home/mates/programming/java/textual-filters/build/classes'
@@ -451,7 +455,7 @@ digraph 0+ 8853
 
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['haskell', 'python'],
-                           \ 'passive_filetypes': ['tex', 'puppet'] }
+                           \ 'passive_filetypes': ['java', 'tex', 'puppet'] }
 map <silent> <Leader>c :Errors<CR>
 map <Leader>x :SyntasticToggleMode<CR>
 
