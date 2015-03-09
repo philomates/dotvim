@@ -109,6 +109,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-j> <C-w>j
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
+nnoremap <C-g> <C-w>h
 
 " Maps Alt-[h,j,k,l] to resizing a window split
 nnoremap <C-LEFT> <C-w><
@@ -333,6 +334,7 @@ au BufNewFile,BufRead *.ejs set filetype=html
 
 " java
 let g:syntastic_java_javac_classpath = $CLASSPATH . ':/home/mates/programming/java/textual-filters/build/classes'
+au FileType java set ts=4 sw=4 sts=4
 
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
@@ -369,24 +371,24 @@ set grepprg=grep\ -nH\ $*
 " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-let g:tex_indent_items = 1
-let g:tex_indent_brace = 0
-let g:Tex_EnvironmentMaps = 0
-let g:Tex_EnvironmentMenus = 0
-let g:Tex_FontMaps = 0
-let g:Tex_FontMenus = 0
-let g:Tex_SectionMaps = 0
-let g:Tex_SectionMenus = 0
+" let g:tex_flavor='latex'
+" let g:tex_indent_items = 1
+" let g:tex_indent_brace = 0
+" let g:Tex_EnvironmentMaps = 0
+" let g:Tex_EnvironmentMenus = 0
+" let g:Tex_FontMaps = 0
+" let g:Tex_FontMenus = 0
+" let g:Tex_SectionMaps = 0
+" let g:Tex_SectionMenus = 0
 
 " overriding imaps JumpFunc
-let g:Imap_UsePlaceHolders=1
-nmap <C-U> <Plug>IMAP_JumpForward
-nmap <F3> :w !detex \| wc -w<CR>
-nmap <F10> :!pdflatex %<CR>
-let g:Tex_IgnoredWarnings=1
-au FileType tex set makeprg=make
-au FileType tex map <F9> :Make<CR>
+" let g:Imap_UsePlaceHolders=1
+" nmap <C-U> <Plug>IMAP_JumpForward
+" nmap <F3> :w !detex \| wc -w<CR>
+" nmap <F10> :!pdflatex %<CR>
+" let g:Tex_IgnoredWarnings=1
+" au FileType tex set makeprg=make
+" au FileType tex map <F9> :Make<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -443,10 +445,6 @@ digraph 0+ 8853
   "
   " foo = ('hello', 'world', 'a', 'b',
   "        'c', 'd', 'e')
-  "
-  " Especially useful for adding items in the middle of long lists/tuples in Python
-  " while maintaining a sane text width.
-  nnoremap K h/[^ ]<cr>"zd$jyyP^v$h"zpJk:s/\v +$//<cr>:noh<cr>j^
   " }}}
 
   " Powerline ------------------------------------------------------------------- {{{
@@ -465,3 +463,4 @@ if &term =~ '256color'
   " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
   set t_ut=
 endif
+
