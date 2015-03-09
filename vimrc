@@ -109,7 +109,6 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-j> <C-w>j
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
-nnoremap <C-g> <C-w>h
 
 " Maps Alt-[h,j,k,l] to resizing a window split
 nnoremap <C-LEFT> <C-w><
