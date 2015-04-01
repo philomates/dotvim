@@ -183,7 +183,8 @@ nnoremap ; :
 nnoremap <leader>w i{<ESC>l%a}<ESC>h%h
 
 " aaaaag
-nnoremap <leader>a :Ag
+nnoremap <leader>a :Ag!
+nnoremap <leader>b :AgBuffer!
 
 " select things that were just pasted
 nnoremap <leader>v V`]
@@ -285,6 +286,8 @@ endfunction
 nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 nmap _= :call Preserve("normal gg=G")<CR>
 
+noremap <F10> :Dispatch /home/mates/dimagi/branch_info.sh<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -333,7 +336,8 @@ au BufNewFile,BufRead *.ejs set filetype=html
 
 " java
 let g:syntastic_java_javac_classpath = $CLASSPATH . ':/home/mates/programming/java/textual-filters/build/classes'
-au FileType java set ts=4 sw=4 sts=4
+au FileType java set ts=4 sw=4 sts=4 tags=~/dimagi/.tags
+
 
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
@@ -463,3 +467,4 @@ if &term =~ '256color'
   set t_ut=
 endif
 
+set t_Co=16
