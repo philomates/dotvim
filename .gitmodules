@@ -37,18 +37,9 @@
 [submodule "bundle/haskellmode-vim"]
 	path = bundle/haskellmode-vim
 	url = https://github.com/lukerandall/haskellmode-vim.git
-[submodule "bundle/vim-hoogle"]
-	path = bundle/vim-hoogle
-	url = https://github.com/Twinside/vim-hoogle.git
 [submodule "bundle/vim-fireplace"]
 	path = bundle/vim-fireplace
 	url = git://github.com/tpope/vim-fireplace.git
-[submodule "bundle/vim-leiningen"]
-	path = bundle/vim-leiningen
-	url = git://github.com/tpope/vim-leiningen.git
-[submodule "bundle/rust.vim"]
-	path = bundle/rust.vim
-	url = https://github.com/wting/rust.vim.git
 [submodule "bundle/vim-elixir"]
 	path = bundle/vim-elixir
 	url = https://github.com/elixir-lang/vim-elixir.git
