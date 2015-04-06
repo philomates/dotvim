@@ -336,7 +336,7 @@ au BufNewFile,BufRead *.ejs set filetype=html
 
 " java
 let g:syntastic_java_javac_classpath = $CLASSPATH . ':/home/mates/programming/java/textual-filters/build/classes'
-au FileType java set ts=4 sw=4 sts=4 tags=~/dimagi/.tags
+au FileType java set ts=4 sw=4 sts=4 tags=.tags
 
 
 " .md is a markdown filetype
