@@ -77,7 +77,7 @@ syntax on
 " always show a status line
 set laststatus=2
 
-set statusline=%<%f%r%h%w\ [%L]\%=\:\b%n\ %y\ [%04l,%04v]\ %p%%\ %m
+" set statusline=%<%f%r%h%w\ [%L]\%=\:\b%n\ %y\ [%04l,%04v]\ %p%%\ %m
 "                 | | | |    |       |     |   |      |    |      |
 "                 | | | |    |       |     |   |      |    |      +-- modified
 "                 | | | |    |       |     |   |      |    +-- percent
@@ -450,9 +450,8 @@ digraph 0+ 8853
   "        'c', 'd', 'e')
   " }}}
 
-  " Powerline ------------------------------------------------------------------- {{{
-  let g:Powerline_symbols = 'compatible'
-  " }}}
+" Powerline ------------------------------------------------------------------- {{{
+" }}}
 
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['haskell', 'python'],
@@ -466,5 +465,3 @@ if &term =~ '256color'
   " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
   set t_ut=
 endif
-
-set t_Co=16
