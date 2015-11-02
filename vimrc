@@ -1,3 +1,35 @@
+" {{{ PLUG
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-vinegar'
+Plug 'terryma/vim-expand-region'
+Plug 'klen/python-mode'
+Plug 'morhetz/gruvbox'
+Plug 'osyo-manga/vim-brightest'
+Plug 'henrik/vim-qargs'
+Plug 'majutsushi/tagbar'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'bling/vim-airline'
+Plug 'itchyny/lightline'
+Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
+Plug 'airblade/vim-gitgutter'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'rking/ag.nvim'
+
+Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
+
+call plug#end()
+
+" }}}
+
 "{{{ LAYOUT and SETTINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -25,19 +57,13 @@ set history=100 " have fifty lines of command-line (etc) history
 " change the mapleader from \ to ,
 let mapleader=","
 
-" pathogen bundles
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
-" To disable a plugin, add it's bundle name to the following list
-let g:pathogen_disabled = ['vim-latex', 'latex-suite']
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Color
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-colorscheme inkpot
-" colorscheme gruvbox
-" set background=dark
+" colorscheme inkpot
+colorscheme gruvbox
+set background=dark
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent
@@ -122,6 +148,8 @@ nnoremap <C-RIGHT> <C-w>>
 
 nnoremap <C-A-RIGHT> :cnext<CR>
 nnoremap <C-A-LEFT> :cprev<CR>
+nnoremap <C-S-A-RIGHT> :lnext<CR>
+nnoremap <C-S-A-LEFT> :lprev<CR>
 
 " instead of 0
 noremap H ^
@@ -406,10 +434,14 @@ au FileType python set makeprg=pylint\ --reports=n\ --output-format=parseable\ -
 au FileType python set errorformat=%f:%l:\ %m
 au FileType python set ts=4 sw=4 sts=4
 " Pylint support
-"autocmd FileType python compiler pylint
-"let g:pylint_onwrite = 1
-"let g:pylint_show_rate = 0
-"let g:pylint_cwindow = 1
+let g:pymode_lint = 1
+let g:pymode_lint_message = 1
+let g:pymode_lint_cwindow = 1
+let g:pymode_folding = 0
+let g:pymode_doc = 0
+let g:pymode_lint_checker = "pyflakes,pep8"
+let g:pymode_lint_write = 1
+au BufWriteCmd *.py write || :PymodeLint
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LaTeX-Suite
@@ -588,8 +620,8 @@ endfunction
 " }}}
 
 let g:syntastic_mode_map = { 'mode': 'active',
-                           \ 'active_filetypes': ['haskell', 'python'],
-                           \ 'passive_filetypes': ['java', 'tex', 'puppet'] }
+                           \ 'active_filetypes': ['haskell'],
+                           \ 'passive_filetypes': ['python', 'java', 'tex', 'puppet'] }
 map <silent> <Leader>c :Errors<CR>
 map <Leader>x :SyntasticToggleMode<CR>
 
