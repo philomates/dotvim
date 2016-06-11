@@ -1,3 +1,7 @@
+set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
+
+set clipboard+=unnamedplus
+
 " {{{ PLUG
 call plug#begin('~/.vim/plugged')
 
@@ -13,20 +17,20 @@ Plug 'morhetz/gruvbox'
 Plug 'osyo-manga/vim-brightest'
 Plug 'henrik/vim-qargs'
 Plug 'majutsushi/tagbar'
+Plug 'wlangstroth/vim-racket'
 Plug 'jlanzarotta/bufexplorer'
-Plug 'bling/vim-airline'
-Plug 'itchyny/lightline'
 Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'rking/ag.nvim'
+Plug 'Numkil/ag.nvim'
 
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 
 call plug#end()
+
 
 " }}}
 
@@ -107,7 +111,7 @@ syntax on
 " always show a status line
 set laststatus=2
 
-" set statusline=%<%f%r%h%w\ [%L]\%=\:\b%n\ %y\ [%04l,%04v]\ %p%%\ %m
+set statusline=%<%f%r%h%w\ [%L]\%=\:\b%n\ %y\ [%04l,%04v]\ %p%%\ %m
 "                 | | | |    |       |     |   |      |    |      |
 "                 | | | |    |       |     |   |      |    |      +-- modified
 "                 | | | |    |       |     |   |      |    +-- percent
@@ -439,6 +443,8 @@ let g:pymode_lint_message = 1
 let g:pymode_lint_cwindow = 1
 let g:pymode_folding = 0
 let g:pymode_doc = 0
+let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope = 0
 let g:pymode_lint_checker = "pyflakes,pep8"
 let g:pymode_lint_write = 1
 au BufWriteCmd *.py write || :PymodeLint
@@ -529,95 +535,6 @@ digraph 0+ 8853
   " foo = ('hello', 'world', 'a', 'b',
   "        'c', 'd', 'e')
   " }}}
-
-" Powerline ------------------------------------------------------------------- {{{
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'component_function': {
-      \   'fugitive': 'MyFugitive',
-      \   'filename': 'MyFilename',
-      \   'fileformat': 'MyFileformat',
-      \   'filetype': 'MyFiletype',
-      \   'fileencoding': 'MyFileencoding',
-      \   'mode': 'MyMode',
-      \ },
-      \ 'component_expand': {
-      \   'syntastic': 'SyntasticStatuslineFlag',
-      \ },
-      \ 'component_type': {
-      \   'syntastic': 'error',
-      \ },
-      \ 'subseparator': { 'left': '|', 'right': '|' }
-      \ }
-
-function! MyModified()
-  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-
-function! MyReadonly()
-  return &ft !~? 'help' && &readonly ? 'RO' : ''
-endfunction
-
-function! MyFilename()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__' ? g:lightline.fname :
-        \ fname =~ 'NERD_tree' ? '' :
-        \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-        \ ('' != fname ? lightline#concatenate([expand('%:h'), expand('%:t')], 0) : '[No Name]') .
-        \ ('' != MyModified() ? ' ' . MyModified() : '')
-endfunction
-
-function! MyFugitive()
-  try
-    if expand('%:t') !~? 'Tagbar\|NERD' && exists('*fugitive#head')
-      let mark = ''  " edit here for cool mark
-      let _ = fugitive#head()
-      return strlen(_) ? mark._ : ''
-    endif
-  catch
-  endtry
-  return ''
-endfunction
-
-function! MyFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-
-function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction
-
-function! MyFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-endfunction
-
-function! MyMode()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__' ? 'Tagbar' :
-        \ fname =~ 'NERD_tree' ? 'NERDTree' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-let g:tagbar_status_func = 'TagbarStatusFunc'
-
-function! TagbarStatusFunc(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-  return lightline#statusline(0)
-endfunction
-
-" augroup AutoSyntastic
-"   autocmd!
-"   autocmd BufWritePost *.c,*.cpp call s:syntastic()
-" augroup END
-" function! s:syntastic()
-"   SyntasticCheck
-"   call lightline#update()
-" endfunction
-" }}}
 
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['haskell'],
