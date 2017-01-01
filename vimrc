@@ -11,6 +11,11 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-salve'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'guns/vim-sexp'
+Plug 'venantius/vim-eastwood'
 Plug 'terryma/vim-expand-region'
 Plug 'klen/python-mode'
 Plug 'morhetz/gruvbox'
@@ -25,6 +30,7 @@ Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'Numkil/ag.nvim'
+Plug 'udalov/kotlin-vim'
 
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
@@ -172,6 +178,12 @@ noremap k gk
 " Map jj to <Esc> during insert mode
 imap jj 
 
+" got to parent block
+nnoremap ]s vatatv
+nnoremap [s vatatov
+
+let g:sexp_enable_insert_mode_mappings = 0
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Buffers
@@ -187,9 +199,6 @@ set hls " Turn highlight search on by default
 
 " Let \ clear the search highlighting
 map <silent> \ :let @/=""<cr>
-
-" Let H toggle highlighting
-map <silent> H :set hls!<CR>
 
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
@@ -321,6 +330,7 @@ endfunction
 
 noremap <F8> :call ReplaceVar()<CR>
 noremap <F7> :TagbarToggle<CR>
+
 let g:tagbar_autofocus = 1
 noremap <F6> :NERDTreeToggle<CR>
 
@@ -328,10 +338,6 @@ noremap <F6> :NERDTreeToggle<CR>
 " " opens a 3 line error window if any errors are found.
 " " If no errors, it closes any open cwindow.
 ":command -nargs=* Make make <args> | cwindow 3
-
-if maparg("<F5>") == ""
-    map <F5> :Run<CR>
-endif
 
 if maparg("<F9>") == ""
     map <F9> :make!<CR>
@@ -406,6 +412,9 @@ filetype indent on
 autocmd filetype html,xml set listchars-=tab:>.
 autocmd filetype html,xml set iskeyword+=-
 
+" xml
+autocmd FileType xml setlocal equalprg=xmllint\ --format\ -\ 2>/dev/null
+
 let NERDTreeIgnore = ['\.pyc$','\.aux$','\.class$','\.toc$','\.pdf$','\.log$','\.glob','\.v.d','\.vo','#$[[file]]']
 let g:NERDTreeMapUpdirKeepOpen = "-"
 let NERDTreeHijackNetrw=1
@@ -423,12 +432,9 @@ au FileType java set ts=4 sw=4 sts=4 tags=.tags
 au BufRead,BufNewFile *.md set filetype=pdc
 au BufRead,BufNewFile *.md.draft set filetype=pdc
 au! BufRead,BufNewFile *.ott setfiletype ott
-autocmd BufNewFile,BufRead *
-  \ if expand('%:~') =~ '^\~/Dropbox' |
-  \   set noswapfile |
-  \ else |
-  \   set swapfile |
-  \ endif
+
+set directory=$HOME/.vim/tmp//
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -500,6 +506,10 @@ map <silent> <leader>tw :call GHC_ShowType(1)<CR>
 " let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
 
 autocmd FileType coq set commentstring=(*\ %s\ *)
+
+au FileType clojure nnoremap <buffer> <F3> :Require<CR>
+au FileType clojure nnoremap <buffer> <F4> :RunTests<CR>
+
 " }}}
 
 " Digraphs {{{
@@ -537,7 +547,7 @@ digraph 0+ 8853
   " }}}
 
 let g:syntastic_mode_map = { 'mode': 'active',
-                           \ 'active_filetypes': ['haskell'],
+                           \ 'active_filetypes': ['haskell', 'clojure'],
                            \ 'passive_filetypes': ['python', 'java', 'tex', 'puppet'] }
 map <silent> <Leader>c :Errors<CR>
 map <Leader>x :SyntasticToggleMode<CR>
