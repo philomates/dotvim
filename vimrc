@@ -11,11 +11,19 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-salve'
+
+Plug 'clojure-vim/async-clj-omni'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'guns/vim-clojure-static' ",  {'branch': 'hack-update'}
+"Plug 'hkupty/vim-clojure-highlight'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
 Plug 'venantius/vim-eastwood'
+Plug 'clojure-vim/acid.nvim'
+
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-classpath'
 Plug 'terryma/vim-expand-region'
 Plug 'klen/python-mode'
 Plug 'morhetz/gruvbox'
@@ -30,7 +38,6 @@ Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'Numkil/ag.nvim'
-Plug 'udalov/kotlin-vim'
 
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
@@ -48,6 +55,7 @@ set nocompatible " Use Vim defaults instead of 100% vi compatibility
 
 set number
 set ruler
+set noincsearch
 
 set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set ff=unix "removes ^M dos stuff
@@ -66,6 +74,7 @@ set history=100 " have fifty lines of command-line (etc) history
 
 " change the mapleader from \ to ,
 let mapleader=","
+let maplocalleader="`"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Color
@@ -98,6 +107,8 @@ set fileencoding=utf-8
 " highlight whitespaces
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
+
+set mouse=c
 
 syntax enable
 syntax on
@@ -149,6 +160,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-j> <C-w>j
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
+" because Ctrl-h wasn't mapping correctly in nvim...
+nnoremap <Backspace> <Esc><C-w>h
 
 " Maps Alt-[h,j,k,l] to resizing a window split
 nnoremap <C-LEFT> <C-w><
@@ -211,8 +224,6 @@ function! QuickfixFilenames()
 endfunction
 
 let g:brightest#highlight = { "group" : "BrightestUnderline" }
-let g:ag_lhandler="topleft lopen"
-let g:ag_prg="ag --vimgrep --smart-case --ignore build"
 
 " List of buffers
 function! s:buflist()
@@ -253,7 +264,7 @@ nmap <silent> <leader>r :source $MYVIMRC<CR>
 nmap <silent> <leader>e :edit $MYVIMRC<CR>
 
 " Sudo Save
-command W w !sudo tee % >/dev/null
+command! W w !sudo tee % >/dev/null
 
 " in normal mode, toggle paste mode and line numbers
 nnoremap <F2> :set invnumber<CR>:set invpaste paste?<CR>
@@ -266,10 +277,13 @@ noremap X "_X
 " no more shift for :
 nnoremap ; :
 
-nnoremap <leader>w i{<ESC>l%a}<ESC>h%h
+" close quickfix window
+nnoremap <leader>r :ccl <CR>
 
 " aaaaag
 nnoremap <leader>a :Ag!
+" search current word under cursor
+nnoremap <leader>z :Ag! <C-R><C-W><CR>
 nnoremap <leader>b :AgBuffer!
 
 " select things that were just pasted
@@ -294,9 +308,8 @@ nnoremap <C-p> :FZF<CR>
 nnoremap <C-d> guiw
 inoremap <C-d> <esc>guiwea
 
-" Source
-vnoremap <leader>S y:execute @@<cr>
-nnoremap <leader>S ^vg_y:execute @@<cr>
+" Show current file in NERDTree
+nmap \f :NERDTreeFind<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Command Line
@@ -370,6 +383,10 @@ nmap _= :call Preserve("normal gg=G")<CR>
 
 noremap <F10> :Dispatch /home/mates/dimagi/branch_info.sh<CR>
 
+command! NuTapd :normal i#nu/tapd <ESC>
+command! RemoveNuTapd :normal V :s/#nu\/tapd\ //g<CR>
+nmap <leader>n :NuTapd<CR>
+nmap <leader>m :RemoveNuTapd<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -507,6 +524,7 @@ map <silent> <leader>tw :call GHC_ShowType(1)<CR>
 
 autocmd FileType coq set commentstring=(*\ %s\ *)
 
+autocmd FileType clojure set iskeyword-=/
 au FileType clojure nnoremap <buffer> <F3> :Require<CR>
 au FileType clojure nnoremap <buffer> <F4> :RunTests<CR>
 
@@ -558,3 +576,11 @@ if &term =~ '256color'
   " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
   " set t_ut=
 endif
+
+let g:sexp_insert_after_wrap = 0
+
+source $HOME/.vim/conf/deoplete.vim
+source $HOME/.vim/conf/acid.vim
+source $HOME/.vim/conf/iron_nvimux.vim
+source $HOME/.vim/conf/bufexplorer.vim
+source $HOME/.vim/conf/ag.vim
