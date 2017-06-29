@@ -14,11 +14,10 @@ Plug 'tpope/vim-vinegar'
 
 Plug 'clojure-vim/async-clj-omni'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'guns/vim-clojure-static' ",  {'branch': 'hack-update'}
-"Plug 'hkupty/vim-clojure-highlight'
+Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-update'}
+Plug 'hkupty/async-clj-highlight'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
-Plug 'venantius/vim-eastwood'
 Plug 'clojure-vim/acid.nvim'
 
 Plug 'tpope/vim-projectionist'
@@ -37,7 +36,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'Numkil/ag.nvim'
+Plug 'mileszs/ack.vim'
 
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
@@ -59,7 +58,8 @@ set noincsearch
 
 set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set ff=unix "removes ^M dos stuff
-set foldmethod=marker " auto fold {{{,}}}
+"set foldmethod=marker " auto fold {{{,}}}
+set nofoldenable
 
 set switchbuf=useopen
 
@@ -80,7 +80,6 @@ let maplocalleader="`"
 " => Color
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-" colorscheme inkpot
 colorscheme gruvbox
 set background=dark
 
@@ -169,8 +168,8 @@ nnoremap <C-UP> <C-W>+
 nnoremap <C-DOWN> <C-W>-
 nnoremap <C-RIGHT> <C-w>>
 
-nnoremap <C-A-RIGHT> :cnext<CR>
-nnoremap <C-A-LEFT> :cprev<CR>
+nnoremap <C-G> :cnext<CR>
+nnoremap <C-T> :cprev<CR>
 nnoremap <C-S-A-RIGHT> :lnext<CR>
 nnoremap <C-S-A-LEFT> :lprev<CR>
 
@@ -281,10 +280,12 @@ nnoremap ; :
 nnoremap <leader>r :ccl <CR>
 
 " aaaaag
-nnoremap <leader>a :Ag!
+nnoremap <leader>a :Ack
 " search current word under cursor
-nnoremap <leader>z :Ag! <C-R><C-W><CR>
-nnoremap <leader>b :AgBuffer!
+nnoremap <leader>z :Ack --literal "<C-R><C-W>"<CR>
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " select things that were just pasted
 nnoremap <leader>v V`]
@@ -381,12 +382,13 @@ endfunction
 nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 nmap _= :call Preserve("normal gg=G")<CR>
 
-noremap <F10> :Dispatch /home/mates/dimagi/branch_info.sh<CR>
-
 command! NuTapd :normal i#nu/tapd <ESC>
 command! RemoveNuTapd :normal V :s/#nu\/tapd\ //g<CR>
 nmap <leader>n :NuTapd<CR>
 nmap <leader>m :RemoveNuTapd<CR>
+command! NuCatchd :normal i#nu/catchd <ESC>
+command! RemoveNuCatchd :normal V :s/#nu\/catchd\ //g<CR>
+nmap <leader>w :NuCatchd<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -583,4 +585,6 @@ source $HOME/.vim/conf/deoplete.vim
 source $HOME/.vim/conf/acid.vim
 source $HOME/.vim/conf/iron_nvimux.vim
 source $HOME/.vim/conf/bufexplorer.vim
-source $HOME/.vim/conf/ag.vim
+
+let @t = 'i(tryl%a(catch Exception e(kb (nu/tapd e)))lh%'
+let @c = 'ldwJhxx%a)jjjddk$h%'
