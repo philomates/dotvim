@@ -19,6 +19,16 @@ Plug 'hkupty/async-clj-highlight'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
 Plug 'clojure-vim/acid.nvim'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+
+" Scala
+Plug 'ensime/ensime-vim'
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+Plug 'mdreves/vim-scaladoc', { 'for': 'scala' }
+
+" Scala Build Tool - SBT
+Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
 
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
@@ -38,7 +48,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mileszs/ack.vim'
 
-Plug 'elzr/vim-json', { 'for': 'json' }
+" Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 
 call plug#end()
@@ -390,6 +400,11 @@ command! NuCatchd :normal i#nu/catchd <ESC>
 command! RemoveNuCatchd :normal V :s/#nu\/catchd\ //g<CR>
 nmap <leader>w :NuCatchd<CR>
 
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+let g:neosnippet#snippets_directory='~/.vim/snippets'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -529,6 +544,7 @@ autocmd FileType coq set commentstring=(*\ %s\ *)
 autocmd FileType clojure set iskeyword-=/
 au FileType clojure nnoremap <buffer> <F3> :Require<CR>
 au FileType clojure nnoremap <buffer> <F4> :RunTests<CR>
+set lispwords+=against-background,fact,facts,future-fact,future-facts
 
 " }}}
 
