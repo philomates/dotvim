@@ -18,9 +18,12 @@ Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-updat
 Plug 'hkupty/async-clj-highlight'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
-Plug 'clojure-vim/acid.nvim'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Vigemus/iron.nvim',  { 'branch': 'legacy', 'do': ':UpdateRemotePlugins' }
+Plug 'Vigemus/iron.nvim', { 'branch': 'lua/replace' }
+Plug 'Vigemus/trex.nvim'
+
+Plug 'junegunn/vim-easy-align'
 
 " Scala
 Plug 'ensime/ensime-vim'
@@ -32,11 +35,9 @@ Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
 
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-classpath'
 Plug 'terryma/vim-expand-region'
 Plug 'klen/python-mode'
 Plug 'morhetz/gruvbox'
-Plug 'osyo-manga/vim-brightest'
 Plug 'henrik/vim-qargs'
 Plug 'majutsushi/tagbar'
 Plug 'wlangstroth/vim-racket'
@@ -48,7 +49,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mileszs/ack.vim'
 
-" Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 
 call plug#end()
@@ -206,6 +206,12 @@ nnoremap [s vatatov
 
 let g:sexp_enable_insert_mode_mappings = 0
 
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Buffers
@@ -269,8 +275,8 @@ nnoremap <silent> <leader>h3 :execute '3match InterestingWord3 /\<<c-r><c-w>\>/'
 
 " {{{ MAPS AND FUNCTIONS
 " Editing vimrc
-nmap <silent> <leader>r :source $MYVIMRC<CR>
-nmap <silent> <leader>e :edit $MYVIMRC<CR>
+nmap <silent> <leader>R :source $MYVIMRC<CR>
+nmap <silent> <leader>E :edit $MYVIMRC<CR>
 
 " Sudo Save
 command! W w !sudo tee % >/dev/null
@@ -392,14 +398,6 @@ endfunction
 nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 nmap _= :call Preserve("normal gg=G")<CR>
 
-command! NuTapd :normal i#nu/tapd <ESC>
-command! RemoveNuTapd :normal V :s/#nu\/tapd\ //g<CR>
-nmap <leader>n :NuTapd<CR>
-nmap <leader>m :RemoveNuTapd<CR>
-command! NuCatchd :normal i#nu/catchd <ESC>
-command! RemoveNuCatchd :normal V :s/#nu\/catchd\ //g<CR>
-nmap <leader>w :NuCatchd<CR>
-
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
@@ -458,9 +456,7 @@ au BufNewFile,BufRead *.ejs set filetype=html
 au BufNewFile,BufRead *.gradle setf groovy
 
 " java
-let g:syntastic_java_javac_classpath = $CLASSPATH . ':/home/mates/programming/java/textual-filters/build/classes'
 au FileType java set ts=4 sw=4 sts=4 tags=.tags
-
 
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
@@ -542,45 +538,11 @@ map <silent> <leader>tw :call GHC_ShowType(1)<CR>
 autocmd FileType coq set commentstring=(*\ %s\ *)
 
 autocmd FileType clojure set iskeyword-=/
-au FileType clojure nnoremap <buffer> <F3> :Require<CR>
-au FileType clojure nnoremap <buffer> <F4> :RunTests<CR>
+" au FileType clojure nnoremap <buffer> <F3> :Require<CR>
+au FileType clojure nnoremap <buffer> <F4> :IronRepl<CR>
 set lispwords+=against-background,fact,facts,future-fact,future-facts
 
 " }}}
-
-" Digraphs {{{
-digraph -( 8713
-digraph -0 8888
-digraph -\ 8614
-digraph \- 8866
-digraph ~> 8669
-digraph \> 8657
-digraph \< 8659
-digraph \2 8777
-" ⅋
-digraph -& 8523
-" ⊗
-digraph 0x 8855
-" ْْ⊕
-digraph 0+ 8853
-" }}}
-
-  " Split/Join {{{
-  "
-  " Basically this splits the current line into two new ones at the cursor position,
-  " then joins the second one with whatever comes next.
-  "
-  " Example:                      Cursor Here
-  "                                    |
-  "                                    V
-  " foo = ('hello', 'world', 'a', 'b', 'c',
-  "        'd', 'e')
-  "
-  "            becomes
-  "
-  " foo = ('hello', 'world', 'a', 'b',
-  "        'c', 'd', 'e')
-  " }}}
 
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['haskell', 'clojure'],
@@ -596,6 +558,12 @@ if &term =~ '256color'
 endif
 
 let g:sexp_insert_after_wrap = 0
+
+" remap jj to escape :terminal mode
+if has('nvim')
+  tnoremap jj <C-\><C-n>
+  tnoremap <Esc> <C-\><C-n>
+endif
 
 source $HOME/.vim/conf/deoplete.vim
 source $HOME/.vim/conf/acid.vim

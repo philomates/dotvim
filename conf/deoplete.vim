@@ -1,4 +1,4 @@
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
 
 let g:deoplete#sources = {}
 let g:deoplete#sources._ = ['buffer', 'tag', 'file', 'neosnippet']
