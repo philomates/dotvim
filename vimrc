@@ -26,7 +26,7 @@ Plug 'Vigemus/trex.nvim'
 Plug 'junegunn/vim-easy-align'
 
 " Scala
-Plug 'ensime/ensime-vim'
+" Plug 'ensime/ensime-vim'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'mdreves/vim-scaladoc', { 'for': 'scala' }
 
@@ -47,7 +47,8 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
+Plug 'jremmen/vim-ripgrep'
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 
@@ -296,11 +297,11 @@ nnoremap ; :
 nnoremap <leader>r :ccl <CR>
 
 " aaaaag
-nnoremap <leader>a :Ack
+nnoremap <leader>a :Rg
 " search current word under cursor
-nnoremap <leader>z :Ack --literal "<C-R><C-W>"<CR>
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+nnoremap <leader>z :Rg -F "<C-R><C-W>"<CR>
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
 endif
 
 " select things that were just pasted
