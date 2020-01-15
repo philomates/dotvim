@@ -18,8 +18,9 @@ Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-updat
 Plug 'hkupty/async-clj-highlight'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
-Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'Vigemus/iron.nvim',  { 'branch': 'legacy', 'do': ':UpdateRemotePlugins' }
+Plug 'tpope/vim-fireplace'
 Plug 'Vigemus/iron.nvim', { 'branch': 'lua/replace' }
 Plug 'Vigemus/trex.nvim'
 
@@ -423,7 +424,7 @@ map <S-k> l
 " save session maps
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 noremap <leader>q :mksession! ~/.vim/.session <CR>
-noremap <leader>s :source ~/.vim/.session <CR>
+noremap <leader>S :source ~/.vim/.session <CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Surround.vim
@@ -538,10 +539,21 @@ map <silent> <leader>tw :call GHC_ShowType(1)<CR>
 
 autocmd FileType coq set commentstring=(*\ %s\ *)
 
-autocmd FileType clojure set iskeyword-=/
+" autocmd FileType clojure set iskeyword-=/
 " au FileType clojure nnoremap <buffer> <F3> :Require<CR>
 au FileType clojure nnoremap <buffer> <F4> :IronRepl<CR>
+autocmd FileType clojure nnoremap <buffer> gd :normal [<c-d><cr>
+
+
 set lispwords+=against-background,fact,facts,future-fact,future-facts
+
+function! SearchClojureWord()
+  exe "set iskeyword-=/"
+  let var = expand("<cword>")
+  exe "set iskeyword+=/"
+  return "".var.""
+endfunction
+nnoremap * :execute "/" . SearchClojureWord()<CR>
 
 " }}}
 
