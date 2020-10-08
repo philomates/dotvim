@@ -18,13 +18,29 @@ Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-updat
 Plug 'hkupty/async-clj-highlight'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
-" Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'Vigemus/iron.nvim',  { 'branch': 'legacy', 'do': ':UpdateRemotePlugins' }
 Plug 'tpope/vim-fireplace'
-Plug 'Vigemus/iron.nvim', { 'branch': 'lua/replace' }
+Plug 'Vigemus/iron.nvim' " , { 'branch': 'lua/replace' }
 Plug 'Vigemus/trex.nvim'
 
+" Plug 'Olical/conjure', {'tag': 'v4.3.0'}
+" Plug 'Olical/AnsiEsc'
+
 Plug 'junegunn/vim-easy-align'
+Plug 'dart-lang/dart-vim-plugin'
+
+
+" Python
+Plug 'zchee/deoplete-jedi'
+let g:jedi#completions_enabled = 0
+let g:jedi#use_splits_not_buffers = "right"
+Plug 'davidhalter/jedi-vim'
+Plug 'sbdchd/neoformat'
+Plug 'neomake/neomake'
+let g:neomake_python_enabled_makers = ['pylint']
+
+" Fennel
+Plug 'Olical/aniseed', { 'tag': 'v3.6.1' }
+Plug 'bakpakin/fennel.vim'
 
 " Scala
 " Plug 'ensime/ensime-vim'
@@ -37,7 +53,6 @@ Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
 Plug 'terryma/vim-expand-region'
-Plug 'klen/python-mode'
 Plug 'morhetz/gruvbox'
 Plug 'henrik/vim-qargs'
 Plug 'majutsushi/tagbar'
@@ -52,6 +67,8 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'jremmen/vim-ripgrep'
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
+
+Plug 'gmarmstrong/vim-muse'
 
 call plug#end()
 
@@ -72,6 +89,8 @@ set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set ff=unix "removes ^M dos stuff
 "set foldmethod=marker " auto fold {{{,}}}
 set nofoldenable
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 
 set switchbuf=useopen
 
@@ -471,22 +490,6 @@ set directory=$HOME/.vim/tmp//
 " => Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Extended python highlighting
-let python_highlight_all=0
-au FileType python set makeprg=pylint\ --reports=n\ --output-format=parseable\ --rcfile=/home/mates/.pylintrc\ %
-au FileType python set errorformat=%f:%l:\ %m
-au FileType python set ts=4 sw=4 sts=4
-" Pylint support
-let g:pymode_lint = 1
-let g:pymode_lint_message = 1
-let g:pymode_lint_cwindow = 1
-let g:pymode_folding = 0
-let g:pymode_doc = 0
-let g:pymode_rope_complete_on_dot = 0
-let g:pymode_rope = 0
-let g:pymode_lint_checker = "pyflakes,pep8"
-let g:pymode_lint_write = 1
-au BufWriteCmd *.py write || :PymodeLint
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LaTeX-Suite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -543,6 +546,9 @@ autocmd FileType coq set commentstring=(*\ %s\ *)
 " au FileType clojure nnoremap <buffer> <F3> :Require<CR>
 au FileType clojure nnoremap <buffer> <F4> :IronRepl<CR>
 autocmd FileType clojure nnoremap <buffer> gd :normal [<c-d><cr>
+" Automatically enable AnsiEsc (interpret ANSI escape codes) for the Conjure log buffer.
+autocmd BufEnter conjure-log-* AnsiEsc
+let g:conjure#log#strip_ansi_escape_sequences_line_limit=0
 
 
 set lispwords+=against-background,fact,facts,future-fact,future-facts
@@ -578,9 +584,11 @@ if has('nvim')
   tnoremap <Esc> <C-\><C-n>
 endif
 
-source $HOME/.vim/conf/deoplete.vim
-source $HOME/.vim/conf/acid.vim
+" source $HOME/.vim/conf/deoplete.vim
+" source $HOME/.vim/conf/acid.vim
 source $HOME/.vim/conf/iron_nvimux.vim
+let g:deoplete#enable_at_startup = 0
+
 source $HOME/.vim/conf/bufexplorer.vim
 
 let @t = 'i(tryl%a(catch Exception e(kb (nu/tapd e)))lh%'
