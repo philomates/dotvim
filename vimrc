@@ -5,22 +5,29 @@ set clipboard+=unnamedplus
 " {{{ PLUG
 call plug#begin('~/.vim/plugged')
 
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-fireplace'
 
 Plug 'clojure-vim/async-clj-omni'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-update'}
 Plug 'hkupty/async-clj-highlight'
-Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'guns/vim-sexp'
-Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'Vigemus/iron.nvim',  { 'branch': 'legacy', 'do': ':UpdateRemotePlugins' }
-Plug 'Vigemus/iron.nvim', { 'branch': 'lua/replace' }
+Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'fennel']}
+" Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'hkupty/iron.nvim'
+" Plug 'Olical/conjure', {'tag': 'v4.3.1'}
+Plug 'Olical/aniseed', { 'tag': 'v3.6.1' }
+Plug 'bakpakin/fennel.vim'
+" Plug 'Vigemus/iron.nvim' ", { 'branch': 'lua/replace' }
 Plug 'Vigemus/trex.nvim'
 
 Plug 'junegunn/vim-easy-align'
@@ -44,14 +51,15 @@ Plug 'wlangstroth/vim-racket'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" Plug 'nvim-treesitter/nvim-treesitter'
+" Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-" Plug 'mileszs/ack.vim'
 Plug 'jremmen/vim-ripgrep'
 
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
-
+" Plug 'chrisbra/Colorizer'
 call plug#end()
 
 
@@ -69,8 +77,8 @@ set noincsearch
 
 set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set ff=unix "removes ^M dos stuff
-"set foldmethod=marker " auto fold {{{,}}}
-set nofoldenable
+set foldmethod=marker " auto fold {{{,}}}
+" set nofoldenable
 
 set switchbuf=useopen
 
@@ -85,7 +93,7 @@ set history=100 " have fifty lines of command-line (etc) history
 
 " change the mapleader from \ to ,
 let mapleader=","
-let maplocalleader="`"
+let maplocalleader="-"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Color
@@ -164,6 +172,9 @@ set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class,*.svn,*.jpg,*.gif,*.png,*.glo
 
 "}}}
 
+" {{{ LANGUAGE SERVER
+"}}}
+
 " {{{ MOVEMENT
 " Movement between split windows
 nnoremap <C-k> <C-w>k
@@ -206,6 +217,7 @@ nnoremap ]s vatatv
 nnoremap [s vatatov
 
 let g:sexp_enable_insert_mode_mappings = 0
+let g:sexp_filetypes = 'clojure,fennel'
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -304,6 +316,8 @@ if executable('rg')
   let g:ackprg = 'rg --vimgrep'
 endif
 
+set grepprg=rg\ --vimgrep
+
 " select things that were just pasted
 nnoremap <leader>v V`]
 
@@ -399,11 +413,6 @@ endfunction
 nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 nmap _= :call Preserve("normal gg=G")<CR>
 
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-let g:neosnippet#snippets_directory='~/.vim/snippets'
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -419,11 +428,10 @@ map <leader>s? z=
 " disable man lookup
 map <S-k> l
 
-
 " save session maps
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
-noremap <leader>q :mksession! ~/.vim/.session <CR>
-noremap <leader>s :source ~/.vim/.session <CR>
+noremap <leader>Q :mksession! ~/.vim/.session <CR>
+noremap <leader>S :source ~/.vim/.session <CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Surround.vim
@@ -463,6 +471,7 @@ au FileType java set ts=4 sw=4 sts=4 tags=.tags
 au BufRead,BufNewFile *.md set filetype=pdc
 au BufRead,BufNewFile *.md.draft set filetype=pdc
 au! BufRead,BufNewFile *.ott setfiletype ott
+au FileType text call deoplete#custom#option('auto_complete', v:false)
 
 set directory=$HOME/.vim/tmp//
 
@@ -484,37 +493,28 @@ let g:pymode_rope_complete_on_dot = 0
 let g:pymode_rope = 0
 let g:pymode_lint_checker = "pyflakes,pep8"
 let g:pymode_lint_write = 1
-au BufWriteCmd *.py write || :PymodeLint
+" au BufWriteCmd *.py write || :PymodeLint
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => LaTeX-Suite
+" => C++
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" IMPORTANT: grep will sometimes skip displaying the file name if you
-" search in a singe file. This will confuse Latex-Suite. Set your grep
-" program to always generate a file-name.
-set grepprg=grep\ -nH\ $*
+" c++ syntax highlighting
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:syntastic_cpp_checkers = ['cpplint']
+let g:syntastic_c_checkers = ['cpplint']
+let g:syntastic_cpp_cpplint_exec = 'cpplint'
+" The following two lines are optional. Configure it to your liking!
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-" let g:tex_flavor='latex'
-" let g:tex_indent_items = 1
-" let g:tex_indent_brace = 0
-" let g:Tex_EnvironmentMaps = 0
-" let g:Tex_EnvironmentMenus = 0
-" let g:Tex_FontMaps = 0
-" let g:Tex_FontMenus = 0
-" let g:Tex_SectionMaps = 0
-" let g:Tex_SectionMenus = 0
-
-" overriding imaps JumpFunc
-" let g:Imap_UsePlaceHolders=1
-" nmap <C-U> <Plug>IMAP_JumpForward
-" nmap <F3> :w !detex \| wc -w<CR>
-" nmap <F10> :!pdflatex %<CR>
-" let g:Tex_IgnoredWarnings=1
-" au FileType tex set makeprg=make
-" au FileType tex map <F9> :Make<CR>
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -538,7 +538,10 @@ map <silent> <leader>tw :call GHC_ShowType(1)<CR>
 
 autocmd FileType coq set commentstring=(*\ %s\ *)
 
-autocmd FileType clojure set iskeyword-=/
+
+autocmd FileType clojure nmap <silent> gd <Plug>FireplaceDjump
+
+" autocmd FileType clojure set iskeyword-=/
 " au FileType clojure nnoremap <buffer> <F3> :Require<CR>
 au FileType clojure nnoremap <buffer> <F4> :IronRepl<CR>
 set lispwords+=against-background,fact,facts,future-fact,future-facts
@@ -566,10 +569,14 @@ if has('nvim')
   tnoremap <Esc> <C-\><C-n>
 endif
 
-source $HOME/.vim/conf/deoplete.vim
-source $HOME/.vim/conf/acid.vim
-source $HOME/.vim/conf/iron_nvimux.vim
-source $HOME/.vim/conf/bufexplorer.vim
+let g:conjure_log_direction = "horizontal"
+let g:conjure_log_blacklist = ["up", "ret", "ret-multiline", "load-file", "eval"]
 
-let @t = 'i(tryl%a(catch Exception e(kb (nu/tapd e)))lh%'
-let @c = 'ldwJhxx%a)jjjddk$h%'
+map <Leader>i :IronRepl<CR>
+
+
+" source $HOME/.vim/conf/deoplete.vim
+" source $HOME/.vim/conf/acid.vim
+" source $HOME/.vim/conf/iron_nvimux.vim
+" source $HOME/.vim/conf/bufexplorer.vim
+" source $HOME/.vim/conf/treesitter.vim
