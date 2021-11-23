@@ -30,7 +30,25 @@ Plug 'bakpakin/fennel.vim'
 " Plug 'Vigemus/iron.nvim' ", { 'branch': 'lua/replace' }
 Plug 'Vigemus/trex.nvim'
 
+" Plug 'Olical/conjure', {'tag': 'v4.3.0'}
+" Plug 'Olical/AnsiEsc'
+
 Plug 'junegunn/vim-easy-align'
+Plug 'dart-lang/dart-vim-plugin'
+
+
+" Python
+Plug 'zchee/deoplete-jedi'
+let g:jedi#completions_enabled = 0
+let g:jedi#use_splits_not_buffers = "right"
+Plug 'davidhalter/jedi-vim'
+Plug 'sbdchd/neoformat'
+Plug 'neomake/neomake'
+let g:neomake_python_enabled_makers = ['pylint']
+
+" Fennel
+Plug 'Olical/aniseed', { 'tag': 'v3.6.1' }
+Plug 'bakpakin/fennel.vim'
 
 " Scala
 " Plug 'ensime/ensime-vim'
@@ -43,7 +61,6 @@ Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
 Plug 'terryma/vim-expand-region'
-Plug 'klen/python-mode'
 Plug 'morhetz/gruvbox'
 Plug 'henrik/vim-qargs'
 Plug 'majutsushi/tagbar'
@@ -77,8 +94,10 @@ set noincsearch
 
 set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set ff=unix "removes ^M dos stuff
-set foldmethod=marker " auto fold {{{,}}}
-" set nofoldenable
+"set foldmethod=marker " auto fold {{{,}}}
+set nofoldenable
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 
 set switchbuf=useopen
 
@@ -538,13 +557,26 @@ map <silent> <leader>tw :call GHC_ShowType(1)<CR>
 
 autocmd FileType coq set commentstring=(*\ %s\ *)
 
-
 autocmd FileType clojure nmap <silent> gd <Plug>FireplaceDjump
-
+"
 " autocmd FileType clojure set iskeyword-=/
 " au FileType clojure nnoremap <buffer> <F3> :Require<CR>
 au FileType clojure nnoremap <buffer> <F4> :IronRepl<CR>
+autocmd FileType clojure nnoremap <buffer> gd :normal [<c-d><cr>
+" Automatically enable AnsiEsc (interpret ANSI escape codes) for the Conjure log buffer.
+autocmd BufEnter conjure-log-* AnsiEsc
+let g:conjure#log#strip_ansi_escape_sequences_line_limit=0
+
+
 set lispwords+=against-background,fact,facts,future-fact,future-facts
+
+function! SearchClojureWord()
+  exe "set iskeyword-=/"
+  let var = expand("<cword>")
+  exe "set iskeyword+=/"
+  return "".var.""
+endfunction
+nnoremap * :execute "/" . SearchClojureWord()<CR>
 
 " }}}
 
@@ -571,6 +603,12 @@ endif
 
 let g:conjure_log_direction = "horizontal"
 let g:conjure_log_blacklist = ["up", "ret", "ret-multiline", "load-file", "eval"]
+" source $HOME/.vim/conf/deoplete.vim
+" source $HOME/.vim/conf/acid.vim
+source $HOME/.vim/conf/iron_nvimux.vim
+let g:deoplete#enable_at_startup = 0
+
+source $HOME/.vim/conf/bufexplorer.vim
 
 map <Leader>i :IronRepl<CR>
 
