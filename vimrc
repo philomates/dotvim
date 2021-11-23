@@ -603,15 +603,9 @@ endif
 
 let g:conjure_log_direction = "horizontal"
 let g:conjure_log_blacklist = ["up", "ret", "ret-multiline", "load-file", "eval"]
-" source $HOME/.vim/conf/deoplete.vim
-" source $HOME/.vim/conf/acid.vim
-source $HOME/.vim/conf/iron_nvimux.vim
 let g:deoplete#enable_at_startup = 0
 
-source $HOME/.vim/conf/bufexplorer.vim
-
 map <Leader>i :IronRepl<CR>
-
 
 " source $HOME/.vim/conf/deoplete.vim
 " source $HOME/.vim/conf/acid.vim
