@@ -14,31 +14,21 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-fireplace'
+" Plug 'tpope/vim-fireplace'
 
-Plug 'clojure-vim/async-clj-omni'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-update'}
-Plug 'hkupty/async-clj-highlight'
+" Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-update'}
+" Plug 'hkupty/async-clj-highlight'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'fennel']}
-" Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'hkupty/iron.nvim'
-" Plug 'Olical/conjure', {'tag': 'v4.3.1'}
-Plug 'Olical/aniseed', { 'tag': 'v3.6.1' }
+Plug 'Olical/conjure'
+Plug 'Olical/AnsiEsc'
+Plug 'Olical/aniseed'
 Plug 'bakpakin/fennel.vim'
-" Plug 'Vigemus/iron.nvim' ", { 'branch': 'lua/replace' }
-Plug 'Vigemus/trex.nvim'
-
-" Plug 'Olical/conjure', {'tag': 'v4.3.0'}
-" Plug 'Olical/AnsiEsc'
 
 Plug 'junegunn/vim-easy-align'
 Plug 'dart-lang/dart-vim-plugin'
 
-
 " Python
-Plug 'zchee/deoplete-jedi'
 let g:jedi#completions_enabled = 0
 let g:jedi#use_splits_not_buffers = "right"
 Plug 'davidhalter/jedi-vim'
@@ -47,16 +37,8 @@ Plug 'neomake/neomake'
 let g:neomake_python_enabled_makers = ['pylint']
 
 " Fennel
-Plug 'Olical/aniseed', { 'tag': 'v3.6.1' }
+Plug 'Olical/aniseed'
 Plug 'bakpakin/fennel.vim'
-
-" Scala
-" Plug 'ensime/ensime-vim'
-Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
-Plug 'mdreves/vim-scaladoc', { 'for': 'scala' }
-
-" Scala Build Tool - SBT
-Plug 'derekwyatt/vim-sbt', { 'for': 'sbt.scala' }
 
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
@@ -68,9 +50,7 @@ Plug 'wlangstroth/vim-racket'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-" Plug 'nvim-treesitter/nvim-treesitter'
-" Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'benekastah/neomake', { 'for': ['python', 'javascript', 'json'] }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'jremmen/vim-ripgrep'
@@ -343,9 +323,6 @@ nnoremap <leader>v V`]
 " When pressing <leader>cd switch to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>
 
-" Fuck you too, manual key.
-nnoremap K <nop>
-
 " Lambda for racket
 imap <C-S-L> λ
 
@@ -447,6 +424,9 @@ map <leader>s? z=
 " disable man lookup
 map <S-k> l
 
+" disable '-' mapping
+noremap - <NOP>
+
 " save session maps
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 noremap <leader>Q :mksession! ~/.vim/.session <CR>
@@ -476,7 +456,7 @@ autocmd filetype html,xml set iskeyword+=-
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ -\ 2>/dev/null
 
 let NERDTreeIgnore = ['\.pyc$','\.aux$','\.class$','\.toc$','\.pdf$','\.log$','\.glob','\.v.d','\.vo','#$[[file]]']
-let g:NERDTreeMapUpdirKeepOpen = "-"
+let g:NERDTreeMapUpdirKeepOpen = "U"
 let NERDTreeHijackNetrw=1
 
 au BufRead,BufNewFile *.scrbl set filetype=scribble
@@ -489,8 +469,6 @@ au FileType java set ts=4 sw=4 sts=4 tags=.tags
 " .md is a markdown filetype
 au BufRead,BufNewFile *.md set filetype=pdc
 au BufRead,BufNewFile *.md.draft set filetype=pdc
-au! BufRead,BufNewFile *.ott setfiletype ott
-au FileType text call deoplete#custom#option('auto_complete', v:false)
 
 set directory=$HOME/.vim/tmp//
 
@@ -533,39 +511,45 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-" nmap <silent> gh :CocCommand clangd.switchSourceHeader<CR>
+nmap <leader>rn <Plug>(coc-rename)
+command! -nargs=0 Format :call CocAction('format')
 
+function! Expand(exp) abort
+    let l:result = expand(a:exp)
+    return l:result ==# '' ? '' : "file://" . l:result
+endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Haskell
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" use ghc functionality for haskell files
-" au Bufenter *.hs compiler ghc
-au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
-au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
-au FileType haskell nnoremap <buffer> <silent> <F3> :HdevtoolsInfo<CR>
-au FileType haskell nnoremap <buffer> <F4> :Hoogle
-au FileType haskell nnoremap <buffer> <C-F4> :HoogleClose<CR>
-let g:haddock_browser = "/usr/bin/chromium"
-let g:haddock_docdir = "/usr/share/doc/ghc/html/"
-au Bufenter *.hs compiler ghc
-" Reload
-map <silent> <leader>tu :call GHC_BrowseAll()<CR>
-" Type Lookup
-map <silent> <leader>tw :call GHC_ShowType(1)<CR>
-" let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
+nnoremap <silent> crcc :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'cycle-coll', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crth :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-first', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crtt :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-last', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crtf :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-first-all', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crtl :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-last-all', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> cruw :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'unwind-thread', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crua :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'unwind-all', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crml :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'move-to-let', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1, input('Binding name: ')]})<CR>
+nnoremap <silent> cril :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'introduce-let', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1, input('Binding name: ')]})<CR>
+nnoremap <silent> crel :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'expand-let', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> cram :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'add-missing-libspec', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crcn :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'clean-ns', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> crcp :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'cycle-privacy', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> cris :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'inline-symbol', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+nnoremap <silent> cref :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'extract-function', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1, input('Function name: ')]})<CR>
 
-autocmd FileType coq set commentstring=(*\ %s\ *)
+autocmd FileType clojure set iskeyword-=/
+" autocmd FileType clojure nnoremap <buffer> gd :normal [<c-d><cr>
 
-autocmd FileType clojure nmap <silent> gd <Plug>FireplaceDjump
-"
-" autocmd FileType clojure set iskeyword-=/
-" au FileType clojure nnoremap <buffer> <F3> :Require<CR>
-au FileType clojure nnoremap <buffer> <F4> :IronRepl<CR>
-autocmd FileType clojure nnoremap <buffer> gd :normal [<c-d><cr>
 " Automatically enable AnsiEsc (interpret ANSI escape codes) for the Conjure log buffer.
 autocmd BufEnter conjure-log-* AnsiEsc
+
 let g:conjure#log#strip_ansi_escape_sequences_line_limit=0
+let g:conjure#log#hud#enabled=0
+let g:conjure#mapping#doc_word="K"
+let g:conjure_log_direction = "horizontal"
+let g:conjure_log_blacklist = ["up", "ret", "ret-multiline", "load-file", "eval"]
+
+noremap <F4> :call ConjureLogToggle<CR>
+
+let g:aniseed#env = v:true
 
 
 set lispwords+=against-background,fact,facts,future-fact,future-facts
@@ -601,14 +585,4 @@ if has('nvim')
   tnoremap <Esc> <C-\><C-n>
 endif
 
-let g:conjure_log_direction = "horizontal"
-let g:conjure_log_blacklist = ["up", "ret", "ret-multiline", "load-file", "eval"]
-let g:deoplete#enable_at_startup = 0
-
-map <Leader>i :IronRepl<CR>
-
-" source $HOME/.vim/conf/deoplete.vim
-" source $HOME/.vim/conf/acid.vim
-" source $HOME/.vim/conf/iron_nvimux.vim
-" source $HOME/.vim/conf/bufexplorer.vim
-" source $HOME/.vim/conf/treesitter.vim
+source $HOME/.vim/conf/treesitter.vim
