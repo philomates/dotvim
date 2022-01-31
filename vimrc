@@ -21,9 +21,10 @@ Plug 'tpope/vim-vinegar'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'fennel']}
 Plug 'Olical/conjure'
-Plug 'Olical/AnsiEsc'
 Plug 'Olical/aniseed'
 Plug 'bakpakin/fennel.vim'
+
+Plug 'm00qek/baleia.nvim', { 'tag': 'v1.1.0' }
 
 Plug 'junegunn/vim-easy-align'
 Plug 'dart-lang/dart-vim-plugin'
@@ -74,7 +75,7 @@ set noincsearch
 
 set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set ff=unix "removes ^M dos stuff
-"set foldmethod=marker " auto fold {{{,}}}
+set foldmethod=marker " auto fold {{{,}}}
 set nofoldenable
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
@@ -538,16 +539,33 @@ nnoremap <silent> cref :call CocRequest('clojure-lsp', 'workspace/executeCommand
 autocmd FileType clojure set iskeyword-=/
 " autocmd FileType clojure nnoremap <buffer> gd :normal [<c-d><cr>
 
-" Automatically enable AnsiEsc (interpret ANSI escape codes) for the Conjure log buffer.
-autocmd BufEnter conjure-log-* AnsiEsc
+let s:baleia = luaeval("require('baleia').setup { line_starts_at = 3 }")
+autocmd BufWinEnter conjure-log-* call s:baleia.automatically(bufnr('%'))
 
 let g:conjure#log#strip_ansi_escape_sequences_line_limit=0
+let g:conjure#log#jump_to_latest#enabled=1
+let g:conjure#log#jump_to_latest#cursor_scroll_position="center"
+let g:conjure#log#fold#enabled=1
+
+let g:conjure#log#fold#marker#start="{{{"
+let g:conjure#log#fold#marker#end="}}}"
 let g:conjure#log#hud#enabled=0
 let g:conjure#mapping#doc_word="K"
+
 let g:conjure_log_direction = "horizontal"
 let g:conjure_log_blacklist = ["up", "ret", "ret-multiline", "load-file", "eval"]
 
-noremap <F4> :call ConjureLogToggle<CR>
+noremap <F4> :ConjureLogToggle<CR>
+noremap <C-Space> :ConjureEvalFile<CR>
+
+
+function! ClerkShow()
+  " save file changes
+  exe "w"
+  exe "ConjureEval (nextjournal.clerk/show! \"" . expand("%:p") . "\")"
+endfunction
+
+nmap <silent> <localleader>cs :execute ClerkShow()<CR>
 
 let g:aniseed#env = v:true
 
@@ -560,7 +578,7 @@ function! SearchClojureWord()
   exe "set iskeyword+=/"
   return "".var.""
 endfunction
-nnoremap * :execute "/" . SearchClojureWord()<CR>
+" nnoremap * :execute "/" . SearchClojureWord()<CR>
 
 " }}}
 
