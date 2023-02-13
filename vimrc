@@ -8,13 +8,19 @@ call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
-" Plug 'tpope/vim-fireplace'
 
 " Plug 'fholiveira/vim-clojure-static',  { 'for': 'clojure', 'branch': 'hack-update'}
 " Plug 'hkupty/async-clj-highlight'
@@ -22,23 +28,21 @@ Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'fennel']}
 Plug 'Olical/conjure'
 Plug 'Olical/aniseed'
-Plug 'bakpakin/fennel.vim'
 
-Plug 'm00qek/baleia.nvim', { 'tag': 'v1.1.0' }
+Plug 'm00qek/baleia.nvim'
 
 Plug 'junegunn/vim-easy-align'
 Plug 'dart-lang/dart-vim-plugin'
 
 " Python
-let g:jedi#completions_enabled = 0
-let g:jedi#use_splits_not_buffers = "right"
-Plug 'davidhalter/jedi-vim'
+" let g:jedi#completions_enabled = 0
+" let g:jedi#use_splits_not_buffers = "right"
+" Plug 'davidhalter/jedi-vim'
 Plug 'sbdchd/neoformat'
 Plug 'neomake/neomake'
 let g:neomake_python_enabled_makers = ['pylint']
 
 " Fennel
-Plug 'Olical/aniseed'
 Plug 'bakpakin/fennel.vim'
 
 Plug 'tpope/vim-projectionist'
@@ -68,6 +72,7 @@ call plug#end()
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible " Use Vim defaults instead of 100% vi compatibility
+set backupcopy=yes
 
 set number
 set ruler
@@ -337,6 +342,8 @@ nnoremap <C-p> :FZF<CR>
 nnoremap <C-d> guiw
 inoremap <C-d> <esc>guiwea
 
+inoremap <C-N> <C-X><C-O>
+
 " Show current file in NERDTree
 nmap \f :NERDTreeFind<CR>
 
@@ -542,13 +549,27 @@ autocmd FileType clojure set iskeyword-=/
 let s:baleia = luaeval("require('baleia').setup { line_starts_at = 3 }")
 autocmd BufWinEnter conjure-log-* call s:baleia.automatically(bufnr('%'))
 
-let g:conjure#log#strip_ansi_escape_sequences_line_limit=0
-let g:conjure#log#jump_to_latest#enabled=1
-let g:conjure#log#jump_to_latest#cursor_scroll_position="center"
-let g:conjure#log#fold#enabled=1
 
-let g:conjure#log#fold#marker#start="{{{"
-let g:conjure#log#fold#marker#end="}}}"
+" let g:conjure#filetype#fennel = "conjure.client.fennel.stdio"
+" let g:conjure#client#fennel#stdio#command = "websocat --protocol bus.sp.nanomsg.org ws://192.168.1.14:5555"
+" let g:conjure#client#fennel#aniseed#aniseed_module_prefix = "aniseed."
+" let g:conjure#client#fennel#stdio#command = "love ."
+" let g:conjure#client#fennel#stdio#prompt_pattern = "\n"
+
+
+let g:conjure#log#strip_ansi_escape_sequences_line_limit= 0
+let g:conjure#log#jump_to_latest#enabled = v:false
+let g:conjure#log#jump_to_latest#cursor_scroll_position="top"
+" let g:conjure#log#fold#enabled=0
+let g:conjure#log#wrap=1
+
+" let g:conjure#client#clojure#nrepl#completion#with_context = v:true
+let g:conjure#client#clojure#nrepl#test#current_form_names = ["defspec", "deftest", "defflow", "defflow-wrapped", "wrapped-defflow"]
+let g:conjure#client#clojure#nrepl#connection#auto_repl#enabled = v:false
+" let g:conjure#debug = v:true
+
+" let g:conjure#log#fold#marker#start="{{{"
+" let g:conjure#log#fold#marker#end="}}}"
 let g:conjure#log#hud#enabled=0
 let g:conjure#mapping#doc_word="K"
 
@@ -565,7 +586,7 @@ function! ClerkShow()
   exe "ConjureEval (nextjournal.clerk/show! \"" . expand("%:p") . "\")"
 endfunction
 
-nmap <silent> <localleader>cs :execute ClerkShow()<CR>
+nmap <silent> <localleader>cs :call ClerkShow()<CR>
 
 let g:aniseed#env = v:true
 
@@ -604,3 +625,5 @@ if has('nvim')
 endif
 
 source $HOME/.vim/conf/treesitter.vim
+set completeopt=menu,menuone,noselect
+source $HOME/.vim/conf/cmp.vim
